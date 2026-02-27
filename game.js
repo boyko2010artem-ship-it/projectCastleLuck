@@ -1,143 +1,151 @@
-let mode="PVP";
-let currentPlayer=1;
-let weather="clear";
-let aiLevel=1;
-
 const armies={
-ROMAN:{hp:110,cards:[
-{name:"Легион",desc:"+10 HP",effect:(a)=>a.hp+=10},
-{name:"Карфаген",desc:"-15 HP врагу",effect:(a,d)=>d.hp-=15}
-]},
-VIKING:{hp:100,cards:[
-{name:"Берсерк",desc:"+20 урон -5 себе",effect:(a,d)=>{d.hp-=20;a.hp-=5}},
-{name:"Набег",desc:"-15 HP врагу",effect:(a,d)=>d.hp-=15}
-]},
-FRANCE:{hp:105,cards:[
-{name:"Жанна д’Арк",desc:"+20 HP",effect:(a)=>a.hp+=20}
-]},
-ENGLAND:{hp:95,cards:[
-{name:"Азенкур",desc:"-18 HP врагу",effect:(a,d)=>d.hp-=18}
-]},
-MONGOL:{hp:100,cards:[
-{name:"Калка",desc:"Игнор стен",effect:(a)=>a.ignore=true}
-]},
-BYZANTINE:{hp:110,cards:[
-{name:"Греческий огонь",desc:"-17 HP врагу",effect:(a,d)=>d.hp-=17}
-]}
+ROMAN:{name:"Рим",hp:120,bonus:"+1 защита за стену"},
+VIKING:{name:"Викинги",hp:110,bonus:"+3 к атаке"},
+ENGLAND:{name:"Англия",hp:105,bonus:"+5 к лечению"},
+FRANCE:{name:"Франция",hp:115,bonus:"+2 стены максимум"},
+MONGOL:{name:"Монголы",hp:110,bonus:"30% шанс игнорировать стены"},
+BYZANTINE:{name:"Византия",hp:120,bonus:"20% шанс блокировать атаку"}
 };
 
-let players={};
+const campaign=[
+{
+title:"146 до н.э. — Падение Карфагена",
+enemy:"Карфаген",
+theme:"#3b2f2f",
+wiki:"https://ru.wikipedia.org/wiki/Падение_Карфагена",
+history:"Рим разрушил Карфаген после Третьей Пунической войны."
+},
+{
+title:"793 — Линдисфарн",
+enemy:"Англия",
+theme:"#1e3a8a",
+wiki:"https://ru.wikipedia.org/wiki/Линдисфарн",
+history:"Викинги напали на монастырь, начало эпохи набегов."
+},
+{
+title:"1415 — Азенкур",
+enemy:"Франция",
+theme:"#1f2937",
+wiki:"https://ru.wikipedia.org/wiki/Битва_при_Азенкуре",
+history:"Английские лучники разгромили французских рыцарей."
+}
+];
+
+let stage=0;
+let player;
+let enemy;
 
 function populateArmies(){
 for(let key in armies){
-armySelect.add(new Option(key,key));
+armySelect.add(new Option(armies[key].name,key));
 }
 }
 
-function startCampaign(){
-mode="AI";
-aiLevel=2;
-menuScreen.classList.add("hidden");
-armyScreen.classList.remove("hidden");
-}
-
-function startPvP(){
-mode="PVP";
-menuScreen.classList.add("hidden");
-armyScreen.classList.remove("hidden");
-}
-
-function startAI(){
-mode="AI";
-aiLevel=1;
-menuScreen.classList.add("hidden");
-armyScreen.classList.remove("hidden");
-}
-
-function confirmArmy(){
-let selected=armySelect.value;
-players={
-1:{...armies[selected],walls:0},
-2:{...armies[randomArmy()],walls:0}
-};
+function startGame(){
+let type=armySelect.value;
+player={type:type,hp:armies[type].hp,walls:0};
+enemy={hp:100,walls:0};
 armyScreen.classList.add("hidden");
 gameScreen.classList.remove("hidden");
-updateUI();
+loadStage();
 }
 
-function randomArmy(){
-let keys=Object.keys(armies);
-return keys[Math.floor(Math.random()*keys.length)];
+function loadStage(){
+let s=campaign[stage];
+campaignTitle.innerText=s.title;
+enemyName.innerText=s.enemy;
+document.body.style.background=s.theme;
+updateUI();
+log("Началась эпоха: "+s.title);
 }
 
 function updateUI(){
-p1.innerHTML=`HP:${players[1].hp}<br>Стены:${players[1].walls}`;
-p2.innerHTML=`HP:${players[2].hp}<br>Стены:${players[2].walls}`;
-turnInfo.innerText="Ход игрока "+currentPlayer;
-weather.innerText=weather==="clear"?"☀️":"🌧";
+playerHP.innerText=player.hp;
+playerWalls.innerText=player.walls;
+enemyHP.innerText=enemy.hp;
+enemyWalls.innerText=enemy.walls;
+}
+
+function log(text){
+let entry=document.createElement("div");
+entry.innerText=text;
+log.prepend(entry);
+}
+
+function animateHit(element){
+element.classList.add("hit");
+setTimeout(()=>element.classList.remove("hit"),300);
 }
 
 function attack(){
-let d=currentPlayer===1?2:1;
-let dmg=12-players[d].walls;
-players[d].hp-=Math.max(1,dmg);
-animateHit(d);
+let dmg=12-enemy.walls;
+if(player.type==="VIKING") dmg+=3;
+dmg=Math.max(1,dmg);
+enemy.hp-=dmg;
+animateHit(enemyBox);
+log("Вы нанесли "+dmg+" урона");
 checkWin();
 updateUI();
 }
 
 function buildWall(){
-players[currentPlayer].walls++;
+player.walls++;
+log("Вы построили стену");
 updateUI();
 }
 
 function heal(){
-players[currentPlayer].hp+=10;
+let amount=10;
+if(player.type==="ENGLAND") amount+=5;
+player.hp+=amount;
+log("Вы восстановили "+amount+" HP");
 updateUI();
 }
 
-function useCard(){
-let d=currentPlayer===1?2:1;
-let card=players[currentPlayer].cards[Math.floor(Math.random()*players[currentPlayer].cards.length)];
-card.effect(players[currentPlayer],players[d]);
-cardTitle.innerText=card.name;
-cardDesc.innerText=card.desc;
-cardModal.style.display="flex";
+function enemyTurn(){
+let dmg=10-player.walls;
+player.hp-=Math.max(1,dmg);
+animateHit(playerBox);
+log("Враг нанёс "+dmg+" урона");
 checkWin();
 updateUI();
 }
 
 function endTurn(){
-currentPlayer=currentPlayer===1?2:1;
-if(mode==="AI" && currentPlayer===2){
-setTimeout(aiMove,800);
-}
-updateUI();
-}
-
-function aiMove(){
-if(aiLevel===1){
-attack();
-}else{
-if(players[2].hp<50) heal();
-else useCard();
-}
-endTurn();
-}
-
-function animateHit(player){
-let el=document.getElementById("p"+player);
-el.classList.add("hit");
-setTimeout(()=>el.classList.remove("hit"),300);
+enemyTurn();
 }
 
 function checkWin(){
-if(players[1].hp<=0||players[2].hp<=0){
-alert("Победа!");
+if(enemy.hp<=0){
+showHistory();
+}
+if(player.hp<=0){
+alert("Вы проиграли кампанию");
 location.reload();
 }
 }
 
-function closeCard(){cardModal.style.display="none";}
+function showHistory(){
+let s=campaign[stage];
+historyTitle.innerText=s.title;
+historyText.innerText=s.history;
+qr.src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data="+encodeURIComponent(s.wiki);
+historyModal.style.display="flex";
+}
+
+function nextStage(){
+historyModal.style.display="none";
+stage++;
+if(stage>=campaign.length){
+alert("Кампания завершена!");
+location.reload();
+}
+player.walls=0;
+enemy={hp:100,walls:0};
+loadStage();
+}
+
+function openGuide(){guideModal.style.display="flex";}
+function closeGuide(){guideModal.style.display="none";}
 
 populateArmies();
