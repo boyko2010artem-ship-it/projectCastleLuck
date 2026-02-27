@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon-512.png">
@@ -19,66 +19,56 @@
 <div class="app">
 
 <header>
-Castleluck
+<span id="appTitle">Castleluck</span>
 <button onclick="openGuide()">❓</button>
 </header>
 
-<div id="armyScreen" class="screen">
-<h2>Выберите армию</h2>
-<select id="armySelect"></select>
-<button onclick="startGame()">Начать кампанию</button>
-</div>
+<div id="stageTitle" class="stage"></div>
 
-<div id="gameScreen" class="screen hidden">
-
-<div id="campaignTitle"></div>
-
-<div class="enemy" id="enemyBox">
+<div class="card enemy" id="enemyBox">
 <h3 id="enemyName"></h3>
-HP: <span id="enemyHP"></span><br>
-Стены: <span id="enemyWalls"></span>
+<div>HP: <span id="enemyHP"></span></div>
+<div>Стены: <span id="enemyWalls"></span></div>
 </div>
 
-<div id="weather"></div>
+<div class="weather" id="weather"></div>
 
-<div class="player" id="playerBox">
+<div class="card player" id="playerBox">
 <h3>Ваш замок</h3>
-HP: <span id="playerHP"></span><br>
-Стены: <span id="playerWalls"></span>
+<div>HP: <span id="playerHP"></span></div>
+<div>Стены: <span id="playerWalls"></span></div>
+<div>Ракета: <span id="rocketStatus"></span></div>
 </div>
 
 <div class="actions">
-<button onclick="attack()">⚔️ Атака</button>
-<button onclick="buildWall()">🧱 Стена</button>
-<button onclick="heal()">💚 Лечение</button>
-<button onclick="endTurn()">🔁 Конец хода</button>
+<button onclick="attack()">⚔️</button>
+<button onclick="buildWall()">🧱</button>
+<button onclick="heal()">💚</button>
+<button id="rocketBtn" onclick="rocket()">🚀</button>
+<button onclick="endTurn()">🔁</button>
 </div>
 
 <div class="log" id="log"></div>
 
 </div>
 
-</div>
-
-<!-- Историческая карточка -->
+<!-- История -->
 <div class="modal" id="historyModal">
 <div class="modal-content">
 <h2 id="historyTitle"></h2>
 <p id="historyText"></p>
 <img id="qr">
-<button onclick="nextStage()">Следующая эпоха</button>
+<button onclick="nextStage()">Дальше</button>
 </div>
 </div>
 
-<!-- Инструкция -->
+<!-- Гайд -->
 <div class="modal" id="guideModal">
 <div class="modal-content">
 <h2>Как играть</h2>
-<p>Цель — победить противника в каждой исторической эпохе.</p>
-<p>⚔️ Атака — наносит урон.</p>
-<p>🧱 Стена — уменьшает входящий урон.</p>
-<p>💚 Лечение — восстанавливает здоровье.</p>
-<p>После победы открывается историческая справка и QR-код.</p>
+<p>Каждый ход вы выбираете действие.</p>
+<p>🚀 Ракета заряжается 2 хода и наносит 30 урона.</p>
+<p>После победы вы узнаете историю эпохи.</p>
 <button onclick="closeGuide()">Закрыть</button>
 </div>
 </div>

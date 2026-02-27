@@ -1,13 +1,16 @@
 body{
 margin:0;
 font-family:-apple-system;
-padding:12px;
-background:#111827;
+padding-top:env(safe-area-inset-top);
+padding-bottom:env(safe-area-inset-bottom);
+padding-left:10px;
+padding-right:10px;
 color:white;
+transition:background 0.5s;
 }
 
 .app{
-max-width:500px;
+max-width:520px;
 margin:auto;
 }
 
@@ -15,8 +18,8 @@ header{
 display:flex;
 justify-content:space-between;
 align-items:center;
+padding:12px 0;
 font-size:20px;
-margin-bottom:10px;
 }
 
 header button{
@@ -26,30 +29,40 @@ color:white;
 font-size:18px;
 }
 
-.screen{
+.stage{
+text-align:center;
+margin-bottom:8px;
+font-weight:600;
 }
 
-.hidden{
-display:none;
-}
-
-.enemy,.player{
-background:#1f2937;
+.card{
 padding:14px;
-border-radius:12px;
+border-radius:14px;
 margin-bottom:10px;
-transition:0.3s;
+transition:0.2s;
 }
 
-.enemy.hit,.player.hit{
+.enemy{
+background:rgba(255,0,0,0.2);
+}
+
+.player{
+background:rgba(0,150,255,0.2);
+}
+
+.hit{
 transform:scale(1.05);
-background:#7f1d1d;
+}
+
+.weather{
+text-align:center;
+margin-bottom:10px;
 }
 
 .actions{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
+grid-template-columns:repeat(5,1fr);
+gap:6px;
 margin-bottom:10px;
 }
 
@@ -57,14 +70,18 @@ margin-bottom:10px;
 padding:12px;
 border:none;
 border-radius:10px;
+font-size:18px;
 background:#2563eb;
 color:white;
-font-size:15px;
+}
+
+.actions button:disabled{
+opacity:0.4;
 }
 
 .log{
-background:#0f172a;
-padding:10px;
+background:rgba(0,0,0,0.4);
+padding:8px;
 border-radius:10px;
 max-height:160px;
 overflow-y:auto;
@@ -86,12 +103,12 @@ align-items:center;
 .modal-content{
 background:#1f2937;
 padding:20px;
-border-radius:12px;
+border-radius:14px;
 width:85%;
 text-align:center;
 }
 
 #qr{
-margin-top:10px;
 width:180px;
+margin-top:10px;
 }

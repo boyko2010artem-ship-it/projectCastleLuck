@@ -1,4 +1,4 @@
-const CACHE="castleluck-v1";
+const CACHE="castleluck-v8";
 
 self.addEventListener("install",e=>{
 e.waitUntil(
