@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Castle Luck</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon-512.png">
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="header">
+Castle Luck
+</div>
+
+<div class="screen">
+
+<div class="led-matrix" id="led"></div>
+
+<div class="status">
+<div id="info"></div>
+<div id="weather"></div>
+</div>
+
+</div>
+
+<div class="controls">
+<button class="btn" onclick="actionA()">A</button>
+<button class="btn" onclick="actionB()">B</button>
+<button class="btn wide" onclick="actionAB()">A+B</button>
+</div>
+
+</div>
+
+<script src="game.js"></script>
+<script>
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+</body>
+</html>
