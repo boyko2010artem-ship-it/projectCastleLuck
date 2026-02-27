@@ -1,126 +1,143 @@
-let currentPlayer = 1;
-let weather = "clear";
-let mode = "AI";
+let mode="PVP";
+let currentPlayer=1;
+let weather="clear";
+let aiLevel=1;
 
-const armies = {
-ROMAN:{
-hp:110,
-deck:[
-{name:"Падение Карфагена",desc:"-10 HP врагу",effect:(g,o)=>o.hp-=10},
-{name:"Testudo",desc:"+3 стены",effect:(g)=>g.walls+=3},
-{name:"Легион",desc:"+2 урон навсегда",effect:(g)=>g.baseDmg+=2},
-{name:"Император",desc:"+15 HP",effect:(g)=>g.hp+=15}
-]
-},
-VIKING:{
-hp:100,
-deck:[
-{name:"Берсерк",desc:"+15 урон, -5 себе",effect:(g,o)=>{o.hp-=15;g.hp-=5}},
-{name:"Набег",desc:"+12 HP урон",effect:(g,o)=>o.hp-=12},
-{name:"Дракар",desc:"+3 AP",effect:(g)=>g.ap+=3},
-{name:"Щиты",desc:"+2 стены",effect:(g)=>g.walls+=2}
-]
-}
+const armies={
+ROMAN:{hp:110,cards:[
+{name:"Легион",desc:"+10 HP",effect:(a)=>a.hp+=10},
+{name:"Карфаген",desc:"-15 HP врагу",effect:(a,d)=>d.hp-=15}
+]},
+VIKING:{hp:100,cards:[
+{name:"Берсерк",desc:"+20 урон -5 себе",effect:(a,d)=>{d.hp-=20;a.hp-=5}},
+{name:"Набег",desc:"-15 HP врагу",effect:(a,d)=>d.hp-=15}
+]},
+FRANCE:{hp:105,cards:[
+{name:"Жанна д’Арк",desc:"+20 HP",effect:(a)=>a.hp+=20}
+]},
+ENGLAND:{hp:95,cards:[
+{name:"Азенкур",desc:"-18 HP врагу",effect:(a,d)=>d.hp-=18}
+]},
+MONGOL:{hp:100,cards:[
+{name:"Калка",desc:"Игнор стен",effect:(a)=>a.ignore=true}
+]},
+BYZANTINE:{hp:110,cards:[
+{name:"Греческий огонь",desc:"-17 HP врагу",effect:(a,d)=>d.hp-=17}
+]}
 };
 
-function createPlayer(type){
-return{
-type:type,
-hp:armies[type].hp,
-walls:0,
-ap:0,
-baseDmg:10,
-deck:[...armies[type].deck]
+let players={};
+
+function populateArmies(){
+for(let key in armies){
+armySelect.add(new Option(key,key));
+}
+}
+
+function startCampaign(){
+mode="AI";
+aiLevel=2;
+menuScreen.classList.add("hidden");
+armyScreen.classList.remove("hidden");
+}
+
+function startPvP(){
+mode="PVP";
+menuScreen.classList.add("hidden");
+armyScreen.classList.remove("hidden");
+}
+
+function startAI(){
+mode="AI";
+aiLevel=1;
+menuScreen.classList.add("hidden");
+armyScreen.classList.remove("hidden");
+}
+
+function confirmArmy(){
+let selected=armySelect.value;
+players={
+1:{...armies[selected],walls:0},
+2:{...armies[randomArmy()],walls:0}
 };
+armyScreen.classList.add("hidden");
+gameScreen.classList.remove("hidden");
+updateUI();
 }
 
-let game={
-p1:createPlayer("ROMAN"),
-p2:createPlayer("VIKING"),
-turn:1
-};
-
-function createLED(){
-const led=document.getElementById("led");
-for(let i=0;i<25;i++){
-let dot=document.createElement("div");
-dot.className="pixel";
-led.appendChild(dot);
-}
-}
-
-function animateLED(num){
-const pixels=document.querySelectorAll(".pixel");
-pixels.forEach(p=>p.classList.remove("on"));
-for(let i=0;i<num && i<25;i++){
-pixels[i].classList.add("on");
-}
+function randomArmy(){
+let keys=Object.keys(armies);
+return keys[Math.floor(Math.random()*keys.length)];
 }
 
 function updateUI(){
-document.getElementById("info").innerText=
-`Ход:${game.turn} | P1:${game.p1.hp} HP | P2:${game.p2.hp} HP`;
-document.getElementById("weather").innerText=
-weather==="clear"?"Ясно":
-weather==="rain"?"Дождь 🌧":
-"Гроза ⛈";
+p1.innerHTML=`HP:${players[1].hp}<br>Стены:${players[1].walls}`;
+p2.innerHTML=`HP:${players[2].hp}<br>Стены:${players[2].walls}`;
+turnInfo.innerText="Ход игрока "+currentPlayer;
+weather.innerText=weather==="clear"?"☀️":"🌧";
 }
 
-function actionA(){ attack(); }
-function actionB(){ useCard(); }
-function actionAB(){ endTurn(); }
-
 function attack(){
-let atk=game["p"+currentPlayer];
-let def=game["p"+(currentPlayer===1?2:1)];
-
-let dmg=atk.baseDmg;
-if(weather==="rain") dmg*=0.8;
-if(weather==="storm") dmg*=1.3;
-dmg-=def.walls;
-dmg=Math.max(1,Math.floor(dmg));
-
-def.hp-=dmg;
-animateLED(dmg);
+let d=currentPlayer===1?2:1;
+let dmg=12-players[d].walls;
+players[d].hp-=Math.max(1,dmg);
+animateHit(d);
 checkWin();
 updateUI();
 }
 
+function buildWall(){
+players[currentPlayer].walls++;
+updateUI();
+}
+
+function heal(){
+players[currentPlayer].hp+=10;
+updateUI();
+}
+
 function useCard(){
-let p=game["p"+currentPlayer];
-let opponent=game["p"+(currentPlayer===1?2:1)];
-if(p.deck.length===0) return;
-let card=p.deck.shift();
-card.effect(p,opponent);
-alert(card.name+"\n"+card.desc);
+let d=currentPlayer===1?2:1;
+let card=players[currentPlayer].cards[Math.floor(Math.random()*players[currentPlayer].cards.length)];
+card.effect(players[currentPlayer],players[d]);
+cardTitle.innerText=card.name;
+cardDesc.innerText=card.desc;
+cardModal.style.display="flex";
+checkWin();
 updateUI();
 }
 
 function endTurn(){
 currentPlayer=currentPlayer===1?2:1;
-game.turn++;
-randomWeather();
 if(mode==="AI" && currentPlayer===2){
-setTimeout(()=>{attack(); endTurn();},1000);
+setTimeout(aiMove,800);
 }
 updateUI();
 }
 
-function randomWeather(){
-if(Math.random()<0.3){
-weather=["clear","rain","storm"][Math.floor(Math.random()*3)];
+function aiMove(){
+if(aiLevel===1){
+attack();
+}else{
+if(players[2].hp<50) heal();
+else useCard();
 }
+endTurn();
+}
+
+function animateHit(player){
+let el=document.getElementById("p"+player);
+el.classList.add("hit");
+setTimeout(()=>el.classList.remove("hit"),300);
 }
 
 function checkWin(){
-if(game.p1.hp<=0||game.p2.hp<=0){
-let winner=game.p1.hp>0?1:2;
-localStorage.setItem("wins_"+winner,
-(Number(localStorage.getItem("wins_"+winner))||0)+1);
-alert("Победил Игрок "+winner);
+if(players[1].hp<=0||players[2].hp<=0){
+alert("Победа!");
 location.reload();
 }
 }
 
-createLED();
-updateUI();
+function closeCard(){cardModal.style.display="none";}
+
+populateArmies();
