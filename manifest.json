@@ -1,9 +1,9 @@
 {
-"name":"Castle Luck",
-"short_name":"Castle",
+"name":"Castleluck",
+"short_name":"Castleluck",
 "display":"standalone",
-"background_color":"#000000",
-"theme_color":"#000000",
+"background_color":"#111827",
+"theme_color":"#111827",
 "start_url":"./index.html",
 "icons":[
 {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
