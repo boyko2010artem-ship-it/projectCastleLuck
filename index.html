@@ -15,7 +15,8 @@
 </header>
 
 <div id="menu" class="screen">
-<button onclick="Game.start()">🏰 Начать кампанию</button>
+<button onclick="Game.start('EUROPE')">🌍 Кампания Европы</button>
+<button onclick="Game.start('RUS')">🛡 Кампания Руси</button>
 </div>
 
 <div id="game" class="screen hidden">
@@ -45,6 +46,16 @@
 
 </div>
 
+</div>
+
+<div id="modal" class="modal hidden">
+<div class="modal-content">
+<h2 id="modalTitle"></h2>
+<p id="modalDesc"></p>
+<ul id="modalFacts"></ul>
+<a id="modalLink" target="_blank">Читать подробнее</a>
+<button onclick="Game.nextStage()">Продолжить</button>
+</div>
 </div>
 
 <script src="data.js"></script>
