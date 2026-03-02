@@ -104,8 +104,7 @@ location.reload();
 },
 
 nextStage(){
-
-document.getElementById("modal").classList.add("hidden");
+document.getElementById("modal").classList.remove("active");
 
 this.stage++;
 
