@@ -1,18 +1,8 @@
 const UI = {
 
 update(){
-let pPercent=(Game.player.hp/Game.player.maxHp)*100;
-let ePercent=(Game.enemy.hp/Game.enemy.maxHp)*100;
-
-playerBar.style.width=pPercent+"%";
-enemyBar.style.width=ePercent+"%";
-
-if(pPercent<30) playerBar.classList.add("low");
-else playerBar.classList.remove("low");
-
-if(ePercent<30) enemyBar.classList.add("low");
-else enemyBar.classList.remove("low");
-
+playerBar.style.width=(Game.player.hp/Game.player.maxHp*100)+"%";
+enemyBar.style.width=(Game.enemy.hp/Game.enemy.maxHp*100)+"%";
 playerMorale.innerText=Game.player.morale;
 enemyMorale.innerText=Game.enemy.morale;
 playerTP.innerText=Game.player.tp;
@@ -22,9 +12,17 @@ log(text){
 log.innerText=text;
 },
 
-shake(){
-document.body.classList.add("shake");
-setTimeout(()=>document.body.classList.remove("shake"),300);
+showHistory(stage){
+modalTitle.innerText=stage.title;
+modalDesc.innerText=stage.desc;
+modalFacts.innerHTML="";
+stage.facts.forEach(f=>{
+let li=document.createElement("li");
+li.innerText=f;
+modalFacts.appendChild(li);
+});
+modalLink.href=stage.wiki;
+modal.classList.remove("hidden");
 }
 
 };
