@@ -1,27 +1,39 @@
 const UI = {
 
 update(){
-playerBar.style.width=(Game.player.hp/Game.player.maxHp*100)+"%";
-enemyBar.style.width=(Game.enemy.hp/Game.enemy.maxHp*100)+"%";
-playerMorale.innerText=Game.player.morale;
-enemyMorale.innerText=Game.enemy.morale;
-playerTP.innerText=Game.player.tp;
+document.getElementById("playerBar").style.width =
+(Game.player.hp/Game.player.maxHp*100)+"%";
+
+document.getElementById("enemyBar").style.width =
+(Game.enemy.hp/Game.enemy.maxHp*100)+"%";
+
+document.getElementById("playerMorale").innerText = Game.player.morale;
+document.getElementById("enemyMorale").innerText = Game.enemy.morale;
+document.getElementById("playerTP").innerText = Game.player.tp;
 },
 
 log(text){
-log.innerText=text;
+document.getElementById("log").innerText = text;
 },
 
 showHistory(stage){
-modalTitle.innerText=stage.title;
-modalDesc.innerText=stage.desc;
-modalFacts.innerHTML="";
+
+const modal = document.getElementById("modal");
+
+document.getElementById("modalTitle").innerText = stage.title;
+document.getElementById("modalDesc").innerText = stage.desc;
+
+const factsList = document.getElementById("modalFacts");
+factsList.innerHTML = "";
+
 stage.facts.forEach(f=>{
-let li=document.createElement("li");
-li.innerText=f;
-modalFacts.appendChild(li);
+let li = document.createElement("li");
+li.innerText = f;
+factsList.appendChild(li);
 });
-modalLink.href=stage.wiki;
+
+document.getElementById("modalLink").href = stage.wiki;
+
 modal.classList.remove("hidden");
 }
 
