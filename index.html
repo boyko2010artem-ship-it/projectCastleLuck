@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Castleluck</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+<header>
+<h1>Castleluck</h1>
+</header>
+
+<div id="menu" class="screen">
+<button onclick="Game.start()">🏰 Начать кампанию</button>
+</div>
+
+<div id="game" class="screen hidden">
+
+<h2 id="stageTitle"></h2>
+
+<div class="card">
+<h3>Противник</h3>
+<div class="hpbar"><div id="enemyBar"></div></div>
+<div>Мораль: <span id="enemyMorale"></span></div>
+</div>
+
+<div class="card">
+<h3>Игрок</h3>
+<div class="hpbar"><div id="playerBar"></div></div>
+<div>ТО: <span id="playerTP"></span></div>
+<div>Мораль: <span id="playerMorale"></span></div>
+</div>
+
+<div class="actions">
+<button onclick="Game.playerAction('attack')">⚔</button>
+<button onclick="Game.playerAction('heal')">💚</button>
+<button onclick="Game.playerAction('rocket')">🚀</button>
+</div>
+
+<div id="log" class="log"></div>
+
+</div>
+
+</div>
+
+<script src="data.js"></script>
+<script src="ui.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
