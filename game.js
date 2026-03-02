@@ -103,14 +103,20 @@ location.reload();
 },
 
 nextStage(){
-modal.classList.add("hidden");
+
+const modalEl = document.getElementById("modal");
+modalEl.classList.add("hidden");
+
 this.stage++;
 
-if(this.stage>=this.campaign.length){
+if(this.stage >= this.campaign.length){
 alert("Кампания завершена!");
 location.reload();
+return;
 }
 
+this.loadStage();
+}
 this.loadStage();
 }
 
