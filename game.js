@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const Game = {
 
 campaign:null,
@@ -103,8 +105,7 @@ location.reload();
 
 nextStage(){
 
-const modal = document.getElementById("modal");
-modal.classList.add("hidden");
+document.getElementById("modal").classList.add("hidden");
 
 this.stage++;
 
@@ -119,6 +120,10 @@ this.loadStage();
 
 };
 
+window.Game = Game;
+
 document.getElementById("continueBtn").addEventListener("click", ()=>{
 Game.nextStage();
+});
+
 });
