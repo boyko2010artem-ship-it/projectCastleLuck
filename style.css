@@ -16,23 +16,25 @@ padding:16px;
 header{
 text-align:center;
 font-size:22px;
-font-weight:600;
-margin-bottom:15px;
+margin-bottom:20px;
 }
 
-.screen{
-display:flex;
-flex-direction:column;
-gap:18px;
-}
-
+.screen{display:flex;flex-direction:column;gap:18px;}
 .hidden{display:none;}
+
+button{
+padding:14px;
+border:none;
+border-radius:16px;
+background:linear-gradient(145deg,#2563eb,#1e40af);
+color:white;
+font-size:16px;
+}
 
 .card{
 background:rgba(255,255,255,0.08);
 padding:14px;
 border-radius:18px;
-backdrop-filter:blur(10px);
 }
 
 .hpbar{
@@ -40,6 +42,7 @@ height:16px;
 background:#111;
 border-radius:10px;
 overflow:hidden;
+margin-bottom:8px;
 }
 
 .hpbar div{
@@ -48,21 +51,8 @@ background:linear-gradient(90deg,#22c55e,#16a34a);
 transition:width 0.3s ease;
 }
 
-.actions{
-display:flex;
-justify-content:space-between;
-gap:10px;
-}
-
-.actions button{
-flex:1;
-height:55px;
-border-radius:50%;
-border:none;
-font-size:20px;
-background:linear-gradient(145deg,#2563eb,#1e40af);
-color:white;
-}
+.actions{display:flex;gap:10px;}
+.actions button{flex:1;border-radius:50%;height:55px;font-size:20px;}
 
 .log{
 background:rgba(0,0,0,0.6);
@@ -72,19 +62,47 @@ min-height:50px;
 text-align:center;
 }
 
-.modal{
-display:none;
-position:fixed;
-inset:0;
+.map{display:flex;justify-content:space-between;margin-bottom:10px;}
+.map-point{width:16px;height:16px;border-radius:50%;background:#444;}
+.map-point.done{background:#22c55e;}
+.map-point.current{background:#facc15;transform:scale(1.3);}
+
+.victory{
+position:fixed;inset:0;
+display:flex;justify-content:center;align-items:center;
 background:rgba(0,0,0,0.9);
-justify-content:center;
-align-items:center;
 z-index:9999;
 }
+.victory.hidden{display:none;}
 
-.modal.active{
-display:flex;
+.victory-content{
+padding:30px;
+border-radius:20px;
+text-align:center;
+animation:pop 0.4s ease;
 }
+
+.victory-europe{
+background:linear-gradient(180deg,#facc15,#ca8a04);
+color:black;
+}
+
+.victory-rus{
+background:linear-gradient(180deg,#60a5fa,#1e40af);
+color:white;
+}
+
+@keyframes pop{
+0%{transform:scale(0.7);opacity:0;}
+100%{transform:scale(1);opacity:1;}
+}
+
+.modal{
+position:fixed;inset:0;
+background:rgba(0,0,0,0.85);
+display:flex;justify-content:center;align-items:center;
+}
+.modal.hidden{display:none;}
 
 .modal-content{
 background:#1e293b;
@@ -92,10 +110,4 @@ padding:20px;
 border-radius:18px;
 width:85%;
 text-align:center;
-}
-
-.modal-content a{
-color:#60a5fa;
-display:block;
-margin:10px 0;
 }
