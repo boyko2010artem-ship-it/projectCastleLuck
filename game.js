@@ -39,7 +39,8 @@ playerAction(type){
 if(type==="attack"){
 let dmg=12;
 this.enemy.hp-=dmg;
-UI.log("Вы атаковали на "+dmg);
+UI.log("⚔ Вы нанесли "+dmg+" урона");
+UI.shake();
 }
 
 if(type==="heal" && this.player.tp>=1){
@@ -70,9 +71,10 @@ let dmg=10;
 this.player.hp-=dmg;
 this.player.morale-=5;
 
-UI.log("AI атакует на "+dmg);
+UI.log("⚔ AI атакует на "+dmg);
+UI.shake();
 
-UI.update();
+ui.update()
 
 if(this.player.hp<=0){
 alert("Поражение");
