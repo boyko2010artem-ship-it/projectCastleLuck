@@ -1,7 +1,7 @@
 body{
 margin:0;
 font-family:-apple-system,BlinkMacSystemFont;
-background:linear-gradient(180deg,#0f172a,#000);
+background:radial-gradient(circle at top,#1e293b,#000);
 color:white;
 padding-top:env(safe-area-inset-top);
 padding-bottom:env(safe-area-inset-bottom);
@@ -10,68 +10,100 @@ padding-bottom:env(safe-area-inset-bottom);
 .app{
 max-width:500px;
 margin:auto;
-padding:16px;
+padding:12px;
+display:flex;
+flex-direction:column;
+gap:16px;
 }
 
 header{
 text-align:center;
-padding:10px 0;
+font-size:22px;
+font-weight:600;
+letter-spacing:1px;
 }
 
 .screen{
 display:flex;
 flex-direction:column;
-gap:16px;
+gap:18px;
 }
 
 .hidden{
 display:none;
 }
 
-button{
-padding:14px;
-border:none;
-border-radius:14px;
-background:linear-gradient(145deg,#2563eb,#1e40af);
-color:white;
-font-size:16px;
-box-shadow:0 4px 12px rgba(0,0,0,0.4);
-}
-
-button:active{
-transform:scale(0.96);
-}
-
 .card{
-background:rgba(255,255,255,0.07);
-padding:16px;
-border-radius:16px;
-backdrop-filter:blur(6px);
+background:rgba(255,255,255,0.08);
+padding:14px;
+border-radius:18px;
+backdrop-filter:blur(10px);
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+}
+
+.card h3{
+margin:0 0 8px 0;
+font-size:16px;
+opacity:0.8;
 }
 
 .hpbar{
-height:18px;
-background:#222;
-border-radius:9px;
+height:16px;
+background:#111;
+border-radius:10px;
 overflow:hidden;
-margin-bottom:8px;
+margin-bottom:6px;
 }
 
 .hpbar div{
 height:100%;
-background:linear-gradient(90deg,lime,green);
-transition:width 0.4s ease;
+background:linear-gradient(90deg,#22c55e,#16a34a);
+transition:width 0.3s ease, background 0.3s ease;
+}
+
+.low{
+background:linear-gradient(90deg,#ef4444,#b91c1c)!important;
 }
 
 .actions{
 display:flex;
 justify-content:space-between;
+gap:10px;
+margin-top:10px;
+}
+
+.actions button{
+flex:1;
+height:55px;
+border-radius:50%;
+font-size:20px;
+border:none;
+background:linear-gradient(145deg,#2563eb,#1e40af);
+color:white;
+box-shadow:0 6px 15px rgba(0,0,0,0.6);
+}
+
+.actions button:active{
+transform:scale(0.9);
 }
 
 .log{
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.6);
 padding:10px;
 border-radius:14px;
-min-height:60px;
+min-height:50px;
 font-size:14px;
+text-align:center;
+}
+
+.shake{
+animation:shake 0.3s;
+}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+25%{transform:translateX(-6px);}
+50%{transform:translateX(6px);}
+75%{transform:translateX(-6px);}
+100%{transform:translateX(0);}
 }
