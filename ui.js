@@ -1,40 +1,55 @@
 const UI = {
 
 update(){
-document.getElementById("playerBar").style.width =
-(Game.player.hp/Game.player.maxHp*100)+"%";
-
-document.getElementById("enemyBar").style.width =
-(Game.enemy.hp/Game.enemy.maxHp*100)+"%";
-
-document.getElementById("playerMorale").innerText = Game.player.morale;
-document.getElementById("enemyMorale").innerText = Game.enemy.morale;
-document.getElementById("playerTP").innerText = Game.player.tp;
+playerBar.style.width=(Game.player.hp/100*100)+"%";
+enemyBar.style.width=(Game.enemy.hp/100*100)+"%";
+playerMorale.innerText=Game.player.morale;
+enemyMorale.innerText=Game.enemy.morale;
+playerTP.innerText=Game.player.tp;
 },
 
-log(text){
-document.getElementById("log").innerText = text;
+log(t){ log.innerText=t; },
+
+renderMap(){
+const map=document.getElementById("map");
+map.innerHTML="";
+Game.campaign.forEach((_,i)=>{
+let p=document.createElement("div");
+p.className="map-point";
+if(i<Game.stage)p.classList.add("done");
+if(i===Game.stage)p.classList.add("current");
+map.appendChild(p);
+});
+},
+
+showVictory(stats){
+const screen=document.getElementById("victoryScreen");
+const content=document.getElementById("victoryContent");
+
+content.className="victory-content "+
+(Game.currentCampaign==="EUROPE"?"victory-europe":"victory-rus");
+
+victoryTitle.innerText="ПОБЕДА!";
+victoryStats.innerHTML=`
+<p>Ходов: ${stats.turns}</p>
+<p>Урон: ${stats.damageDealt}</p>
+<p>Получено: ${stats.damageTaken}</p>
+`;
+
+screen.classList.remove("hidden");
 },
 
 showHistory(stage){
-
-const modal = document.getElementById("modal");
-
-document.getElementById("modalTitle").innerText = stage.title;
-document.getElementById("modalDesc").innerText = stage.desc;
-
-const factsList = document.getElementById("modalFacts");
-factsList.innerHTML = "";
-
+modalTitle.innerText=stage.title;
+modalDesc.innerText=stage.desc;
+modalFacts.innerHTML="";
 stage.facts.forEach(f=>{
-let li = document.createElement("li");
-li.innerText = f;
-factsList.appendChild(li);
+let li=document.createElement("li");
+li.innerText=f;
+modalFacts.appendChild(li);
 });
-
-document.getElementById("modalLink").href = stage.wiki;
-
-modal.classList.add("active");
+modalLink.href=stage.wiki;
+modal.classList.remove("hidden");
 }
 
 };
