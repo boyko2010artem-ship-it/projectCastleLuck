@@ -34,7 +34,7 @@ factsList.appendChild(li);
 
 document.getElementById("modalLink").href = stage.wiki;
 
-modal.classList.remove("hidden");
+modal.classList.add("active");
 }
 
 };
