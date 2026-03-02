@@ -1,92 +1,112 @@
 const Game = {
 
+campaign:null,
 stage:0,
 
-player:{
-hp:100,
-maxHp:100,
-tp:0,
-morale:50
-},
+player:{hp:100,maxHp:100,tp:0,morale:50},
+enemy:{hp:100,maxHp:100,tp:0,morale:50},
 
-enemy:{
-hp:100,
-maxHp:100,
-tp:0,
-morale:50
-},
-
-start(){
+start(type){
+this.campaign = Data.campaigns[type];
 menu.classList.add("hidden");
 game.classList.remove("hidden");
-
 this.stage=0;
 this.loadStage();
 },
 
 loadStage(){
-stageTitle.innerText=Data.stages[this.stage].title;
+let s=this.campaign[this.stage];
+stageTitle.innerText=s.title;
+
 this.player.hp=100;
 this.enemy.hp=100;
 this.player.tp=0;
 this.player.morale=50;
 this.enemy.morale=50;
+
 UI.update();
 },
 
 playerAction(type){
 
-if(type==="attack"){
 let dmg=12;
+
+if(this.player.morale>70) dmg+=2;
+if(this.player.morale<30) dmg-=3;
+
+if(type==="attack"){
 this.enemy.hp-=dmg;
-UI.log("⚔ Вы нанесли "+dmg+" урона");
-UI.shake();
+UI.log("⚔ Вы нанесли "+dmg);
 }
 
 if(type==="heal" && this.player.tp>=1){
 this.player.hp+=10;
 this.player.tp--;
-UI.log("Вы восстановили 10 HP");
+UI.log("💚 Лечение 10");
 }
 
 if(type==="rocket" && this.player.tp>=2){
 this.enemy.hp-=30;
 this.player.tp-=2;
-UI.log("🚀 Ракетный удар 30 урона");
+UI.log("🚀 30 урона");
 }
 
 this.player.tp++;
 UI.update();
 
 if(this.enemy.hp>0){
-setTimeout(()=>this.aiTurn(),600);
+setTimeout(()=>this.aiTurn(),700);
 }else{
-this.nextStage();
+this.player.morale+=20;
+UI.showHistory(this.campaign[this.stage]);
 }
 },
 
 aiTurn(){
 
+let action="attack";
+
+if(this.enemy.hp<30 && this.enemy.tp>=1){
+action="heal";
+}
+
+if(this.enemy.tp>=2 && this.enemy.hp>40){
+action="rocket";
+}
+
+if(action==="attack"){
 let dmg=10;
 this.player.hp-=dmg;
 this.player.morale-=5;
+UI.log("⚔ AI атакует "+dmg);
+}
 
-UI.log("⚔ AI атакует на "+dmg);
-UI.shake();
+if(action==="heal"){
+this.enemy.hp+=8;
+this.enemy.tp--;
+UI.log("AI лечится");
+}
 
-ui.update()
+if(action==="rocket"){
+this.player.hp-=25;
+this.enemy.tp-=2;
+UI.log("AI 🚀 25");
+}
+
+this.enemy.tp++;
+UI.update();
 
 if(this.player.hp<=0){
 alert("Поражение");
 location.reload();
 }
-
 },
 
 nextStage(){
+modal.classList.add("hidden");
 this.stage++;
 
-if(this.stage>=Data.stages.length){
+if(this.stage>=this.campaign.length){
 alert("Кампания завершена!");
 location.reload();
 }
