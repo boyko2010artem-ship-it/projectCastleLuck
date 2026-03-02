@@ -22,6 +22,7 @@
 <div id="game" class="screen hidden">
 
 <h2 id="stageTitle"></h2>
+<div id="map" class="map"></div>
 
 <div class="card">
 <h3>Противник</h3>
@@ -45,16 +46,25 @@
 <div id="log" class="log"></div>
 
 </div>
-
 </div>
 
+<!-- Victory Screen -->
+<div id="victoryScreen" class="victory hidden">
+  <div id="victoryContent" class="victory-content">
+    <h1 id="victoryTitle"></h1>
+    <div id="victoryStats"></div>
+    <button id="victoryBtn">Продолжить</button>
+  </div>
+</div>
+
+<!-- History Modal -->
 <div id="modal" class="modal hidden">
 <div class="modal-content">
 <h2 id="modalTitle"></h2>
 <p id="modalDesc"></p>
 <ul id="modalFacts"></ul>
 <a id="modalLink" target="_blank">Читать подробнее</a>
-<button onclick="Game.nextStage()">Продолжить</button>
+<button id="continueBtn">Дальше</button>
 </div>
 </div>
 
