@@ -8,15 +8,15 @@ enemy:{hp:100,maxHp:100,tp:0,morale:50},
 
 start(type){
 this.campaign = Data.campaigns[type];
-menu.classList.add("hidden");
-game.classList.remove("hidden");
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
 this.stage=0;
 this.loadStage();
 },
 
 loadStage(){
-let s=this.campaign[this.stage];
-stageTitle.innerText=s.title;
+const s=this.campaign[this.stage];
+document.getElementById("stageTitle").innerText=s.title;
 
 this.player.hp=100;
 this.enemy.hp=100;
@@ -75,10 +75,9 @@ action="rocket";
 }
 
 if(action==="attack"){
-let dmg=10;
-this.player.hp-=dmg;
+this.player.hp-=10;
 this.player.morale-=5;
-UI.log("⚔ AI атакует "+dmg);
+UI.log("⚔ AI атакует 10");
 }
 
 if(action==="heal"){
@@ -104,12 +103,12 @@ location.reload();
 
 nextStage(){
 
-const modalEl = document.getElementById("modal");
-modalEl.classList.add("hidden");
+const modal = document.getElementById("modal");
+modal.classList.add("hidden");
 
 this.stage++;
 
-if(this.stage >= this.campaign.length){
+if(this.stage>=this.campaign.length){
 alert("Кампания завершена!");
 location.reload();
 return;
@@ -117,7 +116,9 @@ return;
 
 this.loadStage();
 }
-this.loadStage();
-}
 
 };
+
+document.getElementById("continueBtn").addEventListener("click", ()=>{
+Game.nextStage();
+});
