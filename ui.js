@@ -1,18 +1,22 @@
-const UI = {
+const UI={
 
 logLines:[],
 
-/* вспомогательные функции */
+/* ---------- управление экранами ---------- */
 
 show(id){
+
 document.getElementById(id).classList.remove("hidden")
+
 },
 
 hide(id){
+
 document.getElementById(id).classList.add("hidden")
+
 },
 
-/* меню */
+/* ---------- меню ---------- */
 
 showCampaigns(){
 
@@ -65,7 +69,7 @@ this.show("menu")
 
 },
 
-/* лог */
+/* ---------- лог ---------- */
 
 log(text){
 
@@ -80,20 +84,40 @@ log.innerHTML=this.logLines.join("<br>")
 
 },
 
-/* обновление интерфейса */
+/* ---------- обновление интерфейса ---------- */
 
 update(){
 
-let playerBar=document.getElementById("playerBar")
-let enemyBar=document.getElementById("enemyBar")
-let wallBar=document.getElementById("wallBar")
-let tpValue=document.getElementById("tpValue")
+document.getElementById("playerBar").style.width=
+Math.max(Game.player.hp,0)+"%"
 
-playerBar.style.width=Math.max(Game.player.hp,0)+"%"
-enemyBar.style.width=Math.max(Game.enemy.hp,0)+"%"
-wallBar.style.width=Math.max(Game.walls,0)+"%"
+document.getElementById("enemyBar").style.width=
+Math.max(Game.enemy.hp,0)+"%"
 
-tpValue.innerText=Game.player.tp
+document.getElementById("tpValue").innerText=
+Game.player.tp
+
+},
+
+/* ---------- экран победы ---------- */
+
+showVictory(city){
+
+this.hide("game")
+this.show("victory")
+
+document.getElementById("victoryCity").innerText=
+"Вы захватили "+city
+
+AudioSystem.victory()
+
+},
+
+closeVictory(){
+
+this.hide("victory")
+
+this.showHistory(Game.currentStage)
 
 },
 
@@ -104,21 +128,20 @@ showHistory(stage){
 this.hide("game")
 this.show("history")
 
-let histTitle=document.getElementById("histTitle")
-let histDesc=document.getElementById("histDesc")
-let histFacts=document.getElementById("histFacts")
-let wiki=document.getElementById("wiki")
+document.getElementById("histTitle").innerText=stage.title
+document.getElementById("histDesc").innerText=stage.desc
 
-histTitle.innerText=stage.title
-histDesc.innerText=stage.desc
+let facts=document.getElementById("histFacts")
 
-histFacts.innerHTML=""
+facts.innerHTML=""
 
 stage.facts.forEach(f=>{
-histFacts.innerHTML+="<li>"+f+"</li>"
+
+facts.innerHTML+="<li>"+f+"</li>"
+
 })
 
-wiki.href=stage.wiki
+document.getElementById("wiki").href=stage.wiki
 
 },
 
@@ -134,21 +157,19 @@ this.showQuiz()
 
 showQuiz(){
 
-let quiz=document.getElementById("quiz")
-let quizQuestion=document.getElementById("quizQuestion")
-let quizAnswers=document.getElementById("quizAnswers")
-
 let q=QUIZ[Math.floor(Math.random()*QUIZ.length)]
 
 this.show("quiz")
 
-quizQuestion.innerText=q.q
+document.getElementById("quizQuestion").innerText=q.q
 
-quizAnswers.innerHTML=""
+let answers=document.getElementById("quizAnswers")
+
+answers.innerHTML=""
 
 q.a.forEach((ans,i)=>{
 
-quizAnswers.innerHTML+=`
+answers.innerHTML+=`
 <button onclick="UI.answer(${i},${q.correct})">
 ${ans}
 </button>
@@ -180,7 +201,7 @@ this.show("game")
 
 },
 
-/* карточки */
+/* ---------- карточки ---------- */
 
 showCards(){
 
@@ -206,7 +227,7 @@ cardsList.innerHTML=html
 
 },
 
-/* достижения */
+/* ---------- достижения ---------- */
 
 showAchievements(){
 
