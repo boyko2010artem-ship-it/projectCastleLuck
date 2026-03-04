@@ -8,19 +8,39 @@ if(!map) return
 
 let html="<div class='map'>"
 
-Game.campaign.forEach((city,i)=>{
+Game.campaign.forEach((city,index)=>{
 
 let icon="🏰"
+let cls="city"
 
-if(i<Game.stage) icon="🏆"
+if(index<Game.stage){
 
-if(i===Game.stage) icon="⚔"
+icon="🏆"
+cls+=" conquered"
+
+}
+
+else if(index===Game.stage){
+
+icon="⚔"
+cls+=" current"
+
+}
+
+else{
+
+icon="🏰"
+cls+=" future"
+
+}
 
 html+=`
-<div class="city ${i===Game.stage?'current':''}">
-${icon}
-<br>
-${city.city}
+<div class="${cls}">
+
+<div class="icon">${icon}</div>
+
+<div class="name">${city.city}</div>
+
 </div>
 `
 
