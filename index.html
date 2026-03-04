@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Castleluck</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
 
+<title>Castleluck</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 
 <meta name="theme-color" content="#1e40af">
+
 </head>
+
 <body>
 
 <div class="app">
@@ -20,61 +25,108 @@
 </header>
 
 <div id="menu" class="screen">
+
 <button onclick="Game.start('EUROPE')">🌍 Кампания Европы</button>
+
 <button onclick="Game.start('RUS')">🛡 Кампания Руси</button>
+
 </div>
+
 
 <div id="game" class="screen hidden">
 
 <h2 id="stageTitle"></h2>
-<div id="map" class="map"></div>
+
+<div id="map"></div>
+
 
 <div class="card">
+
 <h3>Противник</h3>
-<div class="hpbar"><div id="enemyBar"></div></div>
-<div>Мораль: <span id="enemyMorale"></span></div>
+
+<div class="hpbar">
+<div id="enemyBar"></div>
 </div>
 
-<div class="card">
-<h3>Игрок</h3>
-<div class="hpbar"><div id="playerBar"></div></div>
-<div>ТО: <span id="playerTP"></span></div>
-<div>Мораль: <span id="playerMorale"></span></div>
+<div>Мораль: <span id="enemyMorale"></span></div>
+
 </div>
+
+
+
+<div class="card">
+
+<h3>Игрок</h3>
+
+<div class="hpbar">
+<div id="playerBar"></div>
+</div>
+
+<div>ТО: <span id="playerTP"></span></div>
+
+<div>Мораль: <span id="playerMorale"></span></div>
+
+</div>
+
 
 <div class="actions">
+
 <button onclick="Game.playerAction('attack')">⚔</button>
+
 <button onclick="Game.playerAction('heal')">💚</button>
+
 <button onclick="Game.playerAction('rocket')">🚀</button>
+
 </div>
+
 
 <div id="log" class="log"></div>
 
 </div>
+
 </div>
 
-<!-- Victory Screen -->
+
 <div id="victoryScreen" class="victory hidden">
-  <div id="victoryContent" class="victory-content">
-    <h1 id="victoryTitle"></h1>
-    <div id="victoryStats"></div>
-    <button id="victoryBtn">Продолжить</button>
-  </div>
+
+<div id="victoryContent" class="victory-content">
+
+<h1 id="victoryTitle"></h1>
+
+<div id="victoryStats"></div>
+
+<button id="victoryBtn">Продолжить</button>
+
 </div>
 
-<!-- History Modal -->
+</div>
+
+
+
 <div id="modal" class="modal hidden">
+
 <div class="modal-content">
+
 <h2 id="modalTitle"></h2>
+
 <p id="modalDesc"></p>
+
 <ul id="modalFacts"></ul>
+
 <a id="modalLink" target="_blank">Читать подробнее</a>
+
 <button id="continueBtn">Дальше</button>
+
 </div>
+
 </div>
+
 
 <script src="data.js"></script>
+<script src="events.js"></script>
+<script src="map.js"></script>
 <script src="ui.js"></script>
 <script src="game.js"></script>
+
 </body>
 </html>
