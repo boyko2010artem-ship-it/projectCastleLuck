@@ -1,15 +1,15 @@
 {
-"name": "Castleluck",
-"short_name": "Castleluck",
-"start_url": ".",
-"display": "standalone",
-"background_color": "#000000",
-"theme_color": "#1e40af",
-"icons": [
+"name":"Castleluck",
+"short_name":"Castleluck",
+"start_url":".",
+"display":"standalone",
+"background_color":"#000000",
+"theme_color":"#1e40af",
+"icons":[
 {
-"src": "icon-192.png",
-"sizes": "192x192",
-"type": "image/png"
+"src":"icon-192.png",
+"sizes":"192x192",
+"type":"image/png"
 }
 ]
 }
