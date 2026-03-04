@@ -1,38 +1,71 @@
 const ARMIES={
 
-england:{
-name:"Англия",
-hp:100,
-attack:14,
-description:"Английская армия славилась длинными луками и дисциплиной."
-},
+rome:{
+name:"Рим",
 
-france:{
-name:"Франция",
-hp:120,
-attack:11,
-description:"Французские рыцари составляли основу армии."
-},
+description:"Сбалансированная армия с сильной дисциплиной.",
 
-rus:{
-name:"Русь",
-hp:130,
-attack:12,
-description:"Русские дружины защищали города и крепости."
+bonus:{
+attack:2,
+wall:1
+}
+
 },
 
 mongols:{
 name:"Монголы",
-hp:95,
-attack:15,
-description:"Монголы использовали мобильную конницу и быстрые атаки."
+
+description:"Агрессивная армия с мощными атаками.",
+
+bonus:{
+attack:4
+}
+
+},
+
+england:{
+name:"Англия",
+
+description:"Лучники Англии наносят высокий урон.",
+
+bonus:{
+attack:3
+}
+
+},
+
+france:{
+name:"Франция",
+
+description:"Французские рыцари сильны в обороне.",
+
+bonus:{
+wall:2
+}
+
 },
 
 vikings:{
 name:"Викинги",
-hp:110,
-attack:16,
-description:"Викинги были знамениты своей силой и морскими походами."
+
+description:"Сильная атака, но слабая защита.",
+
+bonus:{
+attack:5
+}
+
+},
+
+byzantium:{
+name:"Византия",
+
+description:"Универсальная армия с хорошей защитой.",
+
+bonus:{
+attack:2,
+wall:2
+}
+
 }
 
 }
