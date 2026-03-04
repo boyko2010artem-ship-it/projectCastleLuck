@@ -1,75 +1,80 @@
 const UI={
 
+openPlay(){
+
+mainMenu.classList.add("hidden")
+playMenu.classList.remove("hidden")
+
+},
+
+backMenu(){
+
+document.querySelectorAll(".screen")
+.forEach(s=>s.classList.add("hidden"))
+
+mainMenu.classList.remove("hidden")
+
+},
+
+openAchievements(){
+
+mainMenu.classList.add("hidden")
+achievementsScreen.classList.remove("hidden")
+
+let list=""
+
+for(let a in Achievements.list){
+
+list+=`<div>${Achievements.unlocked[a]?"✅":"⬜"} ${Achievements.list[a]}</div>`
+
+}
+
+achievementsList.innerHTML=list
+
+},
+
+openAbout(){
+
+alert("Castleluck — историческая стратегия")
+
+},
+
+log(t){
+
+log.innerText=t
+
+},
+
 update(){
 
 playerBar.style.width=Game.player.hp+"%"
 enemyBar.style.width=Game.enemy.hp+"%"
-
-playerMorale.innerText=Game.player.morale
-enemyMorale.innerText=Game.enemy.morale
 playerTP.innerText=Game.player.tp
-
-},
-
-log(text){
-
-document.getElementById("log").innerText=text
-
-},
-
-renderMap(){
-
-MapSystem.render()
-
-},
-
-showVictory(stats){
-
-Achievements.unlock("firstWin")
-
-victoryTitle.innerText="ПОБЕДА"
-
-victoryStats.innerHTML=
-`Ходов: ${stats.turns}<br>
-Урон: ${stats.damageDealt}<br>
-Получено: ${stats.damageTaken}`
-
-victoryScreen.classList.remove("hidden")
 
 },
 
 showHistory(stage){
 
-modalTitle.innerText=stage.title
-modalDesc.innerText=stage.desc
+historyTitle.innerText=stage.title
+historyDesc.innerText=stage.desc
 
-modalFacts.innerHTML=""
+historyFacts.innerHTML=""
 
 stage.facts.forEach(f=>{
-let li=document.createElement("li")
-li.innerText=f
-modalFacts.appendChild(li)
+historyFacts.innerHTML+="<li>"+f+"</li>"
 })
 
-modalLink.href=stage.wiki
+wikiLink.href=stage.wiki
 
-modal.classList.remove("hidden")
+historyModal.classList.remove("hidden")
 
 },
 
-showAchievement(a){
+closeHistory(){
 
-let el=document.createElement("div")
+historyModal.classList.add("hidden")
 
-el.className="achievementPopup"
-
-el.innerText="🏆 "+a.name
-
-document.body.appendChild(el)
-
-setTimeout(()=>{
-el.remove()
-},3000)
+Game.nextStage()
 
 }
 
