@@ -19,6 +19,8 @@ chooseCampaign(name){
 
 this.campaign=DATA[name]
 
+Achievements.unlock(name==="europe"?"europeStart":"rusStart")
+
 UI.showArmies()
 
 },
@@ -26,6 +28,8 @@ UI.showArmies()
 chooseArmy(id){
 
 this.army=ARMIES[id]
+
+Achievements.unlock(id+"Army")
 
 UI.startGame()
 
@@ -71,6 +75,8 @@ else el.className="wall4"
 
 attack(){
 
+Achievements.unlock("firstAttack")
+
 let dmg=this.army.attack
 
 this.enemy.hp-=dmg
@@ -87,13 +93,17 @@ this.turn()
 
 siege(){
 
+Achievements.unlock("firstSiege")
+
 let dmg=12
 
 this.walls-=dmg
 
 if(this.walls<0) this.walls=0
 
-UI.log("Вы разрушаете стены "+dmg)
+Achievements.addStat("walls",1)
+
+UI.log("Вы наносите удар по стенам "+dmg)
 
 AudioSystem.siege()
 
@@ -107,15 +117,20 @@ this.turn()
 
 heal(){
 
+Achievements.unlock("firstHeal")
+
 if(this.player.tp<1){
 
-UI.log("Нужно очко действия")
+UI.log("Недостаточно очков действий")
 
 return
 
 }
 
 this.player.hp+=10
+
+if(this.player.hp>100)
+this.player.hp=100
 
 this.player.tp--
 
@@ -128,6 +143,8 @@ this.turn()
 },
 
 special(){
+
+Achievements.unlock("firstSpecial")
 
 if(this.player.tp<2){
 
@@ -175,7 +192,7 @@ setTimeout(()=>{
 
 wall.classList.remove("wallShake")
 
-},300)
+},350)
 
 },
 
@@ -189,11 +206,14 @@ UI.update()
 
 if(this.walls<=0 && this.enemy.hp<=0){
 
+Achievements.addStat("cities",1)
+Achievements.addStat("wins",1)
+
 setTimeout(()=>{
 
-this.victory()
+this.showVictory()
 
-},600)
+},500)
 
 return
 
@@ -213,39 +233,23 @@ UI.update()
 
 },
 
-victory(){
+showVictory(){
 
 AudioSystem.victory()
 
-game.classList.add("hidden")
+let s=this.campaign[this.stage]
 
-let win=document.createElement("div")
-
-win.id="victoryScreen"
-
-win.innerHTML=`
-
-<h2>🏆 Город захвачен!</h2>
-
-<button onclick="Game.continueCampaign()">
-Продолжить
-</button>
-
-`
-
-document.body.appendChild(win)
+UI.showHistory(s)
 
 },
 
 continueCampaign(){
 
-let win=document.getElementById("victoryScreen")
-
-if(win) win.remove()
-
 this.stage++
 
 if(this.stage>=this.campaign.length){
+
+Achievements.unlock("campaignWin")
 
 alert("Кампания завершена!")
 
