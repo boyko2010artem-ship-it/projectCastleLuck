@@ -3,103 +3,63 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Castleluck</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
 
 </head>
 
 <body>
 
-<div class="app">
+<div id="app">
 
-<header>
-<h1>Castleluck</h1>
-</header>
+<h1 class="logo">Castleluck</h1>
 
 <div id="mainMenu" class="screen">
 
-<button onclick="UI.openPlay()">▶ Играть</button>
-<button onclick="UI.openAchievements()">🏆 Достижения</button>
-<button onclick="UI.openAbout()">📖 О проекте</button>
+<button onclick="Game.startCampaign('europe')">
+🌍 Кампания Европы
+</button>
+
+<button onclick="Game.startCampaign('rus')">
+🛡 Кампания Руси
+</button>
+
+<button onclick="UI.openAchievements()">
+🏆 Достижения
+</button>
 
 </div>
 
+<div id="gameScreen" class="screen hidden">
 
-<div id="playMenu" class="screen hidden">
+<div class="bars">
 
-<h2>Кампания</h2>
-
-<button onclick="Game.chooseCampaign('EUROPE')">🌍 Европа</button>
-<button onclick="Game.chooseCampaign('RUS')">🛡 Русь</button>
-
-<button onclick="UI.backMenu()">⬅ Назад</button>
-
+<div class="bar">
+Игрок
+<div class="hp"><div id="playerBar"></div></div>
 </div>
 
-
-
-<div id="armyMenu" class="screen hidden">
-
-<h2>Армия</h2>
-
-<div id="armyList"></div>
-
-</div>
-
-
-
-<div id="difficultyMenu" class="screen hidden">
-
-<h2>Сложность</h2>
-
-<button onclick="Game.startGame(1)">Лёгкая</button>
-<button onclick="Game.startGame(2)">Нормальная</button>
-<button onclick="Game.startGame(3)">Историческая</button>
-
-</div>
-
-
-
-<div id="game" class="screen hidden">
-
-<h2 id="stageTitle"></h2>
-
-<div id="map"></div>
-
-<div class="card">
-
-<h3>Противник</h3>
-
-<div class="hpbar">
-<div id="enemyBar"></div>
+<div class="bar">
+Враг
+<div class="hp"><div id="enemyBar"></div></div>
 </div>
 
 </div>
 
-
-<div class="card">
-
-<h3>Игрок</h3>
-
-<div class="hpbar">
-<div id="playerBar"></div>
+<div id="tpBox">
+Очки действий: <span id="playerTP">0</span>
 </div>
 
-<div>Энергия: <span id="playerTP"></span></div>
+<div id="actions">
 
-</div>
-
-
-<div class="actions">
-
-<button onclick="Game.playerAction('attack')">⚔</button>
-<button onclick="Game.playerAction('heal')">💚</button>
-<button onclick="Game.playerAction('rocket')">🚀</button>
+<button onclick="Game.attack()">⚔</button>
+<button onclick="Game.build()">🧱</button>
+<button onclick="Game.heal()">💚</button>
+<button onclick="Game.rocket()">🚀</button>
 
 </div>
 
@@ -107,33 +67,33 @@
 
 </div>
 
-
-
-<div id="historyModal" class="modal hidden">
-
-<h2 id="historyTitle"></h2>
-<p id="historyDesc"></p>
-
-<ul id="historyFacts"></ul>
-
-<a id="wikiLink" target="_blank">Wikipedia</a>
-
-<button onclick="UI.closeHistory()">Продолжить</button>
-
-</div>
-
-
-
 <div id="achievementsScreen" class="screen hidden">
 
 <h2>Достижения</h2>
 
 <div id="achievementsList"></div>
 
-<button onclick="UI.backMenu()">⬅ Назад</button>
+<button onclick="UI.backMenu()">Назад</button>
 
 </div>
 
+<div id="historyModal" class="modal hidden">
+
+<h2 id="historyTitle"></h2>
+
+<p id="historyDesc"></p>
+
+<ul id="historyFacts"></ul>
+
+<a id="wikiLink" target="_blank">Wikipedia</a>
+
+<br>
+
+<button onclick="UI.closeHistory()">Продолжить</button>
+
+</div>
+
+</div>
 
 <script src="data.js"></script>
 <script src="audio.js"></script>
