@@ -1,54 +1,33 @@
-const MapSystem={
+const MapSystem = {
 
 render(){
 
-let map=document.getElementById("map")
+let mapEl=document.getElementById("map")
 
-if(!map) return
+mapEl.innerHTML=""
 
-let html="<div class='map'>"
+let campaign=Game.campaign
 
-Game.campaign.forEach((city,index)=>{
+campaign.forEach((city,i)=>{
 
-let icon="🏰"
-let cls="city"
+let state="future"
 
-if(index<Game.stage){
+if(i<Game.stage) state="conquered"
+if(i===Game.stage) state="current"
 
-icon="🏆"
-cls+=" conquered"
+mapEl.innerHTML+=`
+<div class="city ${state}">
 
-}
+<div class="icon">🏰</div>
 
-else if(index===Game.stage){
-
-icon="⚔"
-cls+=" current"
-
-}
-
-else{
-
-icon="🏰"
-cls+=" future"
-
-}
-
-html+=`
-<div class="${cls}">
-
-<div class="icon">${icon}</div>
-
-<div class="name">${city.city}</div>
+<div class="name">
+${city.city}
+</div>
 
 </div>
 `
 
 })
-
-html+="</div>"
-
-map.innerHTML=html
 
 }
 
