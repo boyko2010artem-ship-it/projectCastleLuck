@@ -1,38 +1,21 @@
-const SaveSystem = {
+const Save={
 
 save(){
 
-localStorage.setItem(
-"castleluckSave",
-JSON.stringify({
-stage:Game.stage,
-campaign:Game.currentCampaign,
-army:Game.armyKey,
-achievements:Achievements.unlocked
-})
-)
+localStorage.setItem("castleluck",
+JSON.stringify(Game))
 
 },
 
 load(){
 
-let data=localStorage.getItem("castleluckSave")
+let s=localStorage.getItem("castleluck")
 
-if(!data) return
+if(s){
 
-data=JSON.parse(data)
+Object.assign(Game,JSON.parse(s))
 
-Game.stage=data.stage
-Game.currentCampaign=data.campaign
-Game.armyKey=data.army
-
-Achievements.unlocked=data.achievements||{}
-
-},
-
-clear(){
-
-localStorage.removeItem("castleluckSave")
+}
 
 }
 
