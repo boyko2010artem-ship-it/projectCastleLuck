@@ -13,18 +13,11 @@ hp:0
 },
 
 walls:0,
-
 army:null,
 
 chooseCampaign(name){
 
 this.campaign=DATA[name]
-
-if(name==="europe")
-Achievements.unlock("europeStart")
-
-if(name==="rus")
-Achievements.unlock("rusStart")
 
 UI.showArmies()
 
@@ -34,9 +27,11 @@ chooseArmy(id){
 
 this.army=ARMIES[id]
 
-Achievements.unlock(id+"Army")
-
 UI.startGame()
+
+this.stage=0
+
+AudioSystem.music()
 
 this.startStage()
 
@@ -59,6 +54,8 @@ this.updateWalls()
 
 UI.update()
 
+UI.log("Началась осада города "+s.city)
+
 },
 
 updateWalls(){
@@ -74,15 +71,15 @@ else el.className="wall4"
 
 attack(){
 
-Achievements.unlock("firstAttack")
-
 let dmg=this.army.attack
 
 this.enemy.hp-=dmg
 
-UI.log("Атака "+dmg)
+UI.log("Вы атаковали гарнизон "+dmg)
 
-AudioSystem.play(400)
+AudioSystem.attack()
+
+this.animateHit(enemyBar)
 
 this.turn()
 
@@ -90,17 +87,19 @@ this.turn()
 
 siege(){
 
-Achievements.unlock("firstSiege")
-
 let dmg=12
 
 this.walls-=dmg
 
+if(this.walls<0) this.walls=0
+
+UI.log("Вы разрушаете стены "+dmg)
+
+AudioSystem.siege()
+
+this.animateWall()
+
 this.updateWalls()
-
-UI.log("Осада нанесла "+dmg)
-
-AudioSystem.play(200)
 
 this.turn()
 
@@ -108,17 +107,21 @@ this.turn()
 
 heal(){
 
-Achievements.unlock("firstHeal")
+if(this.player.tp<1){
 
-if(this.player.tp<1) return
+UI.log("Нужно очко действия")
+
+return
+
+}
 
 this.player.hp+=10
 
 this.player.tp--
 
-UI.log("Лечение")
+AudioSystem.heal()
 
-AudioSystem.play(600)
+UI.log("Вы лечитесь")
 
 this.turn()
 
@@ -126,19 +129,53 @@ this.turn()
 
 special(){
 
-Achievements.unlock("firstSpecial")
+if(this.player.tp<2){
 
-if(this.player.tp<2) return
+UI.log("Нужно 2 очка действия")
 
-this.enemy.hp-=30
+return
+
+}
 
 this.player.tp-=2
 
-UI.log("Спецудар")
+let dmg=30
 
-AudioSystem.play(120)
+this.enemy.hp-=dmg
+
+AudioSystem.special()
+
+UI.log("Мощный удар "+dmg)
+
+this.animateHit(enemyBar)
 
 this.turn()
+
+},
+
+animateHit(el){
+
+el.classList.add("hit")
+
+setTimeout(()=>{
+
+el.classList.remove("hit")
+
+},300)
+
+},
+
+animateWall(){
+
+let wall=document.getElementById("wallVisual")
+
+wall.classList.add("wallShake")
+
+setTimeout(()=>{
+
+wall.classList.remove("wallShake")
+
+},300)
 
 },
 
@@ -148,35 +185,69 @@ this.player.tp++
 
 UI.update()
 
+// победа
+
 if(this.walls<=0 && this.enemy.hp<=0){
 
-Achievements.unlock("firstCity")
+setTimeout(()=>{
 
-UI.showHistory(this.campaign[this.stage])
+this.victory()
+
+},600)
 
 return
 
 }
 
+// ход AI
+
 setTimeout(()=>{
 
 AI.turn()
 
+this.checkLose()
+
 UI.update()
 
-},600)
+},800)
 
 },
 
-next(){
+victory(){
+
+AudioSystem.victory()
+
+game.classList.add("hidden")
+
+let win=document.createElement("div")
+
+win.id="victoryScreen"
+
+win.innerHTML=`
+
+<h2>🏆 Город захвачен!</h2>
+
+<button onclick="Game.continueCampaign()">
+Продолжить
+</button>
+
+`
+
+document.body.appendChild(win)
+
+},
+
+continueCampaign(){
+
+let win=document.getElementById("victoryScreen")
+
+if(win) win.remove()
 
 this.stage++
 
 if(this.stage>=this.campaign.length){
 
-Achievements.unlock("campaignWin")
-
-alert("Кампания завершена")
+alert("Кампания завершена!")
 
 location.reload()
 
@@ -184,7 +255,23 @@ return
 
 }
 
+game.classList.remove("hidden")
+
 this.startStage()
+
+},
+
+checkLose(){
+
+if(this.player.hp<=0){
+
+AudioSystem.lose()
+
+alert("Вы проиграли осаду")
+
+location.reload()
+
+}
 
 }
 
