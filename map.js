@@ -9,7 +9,7 @@ if(Game.currentCampaign==="EUROPE"){
 map.innerHTML=`
 <div class="worldMap">
 
-<div class="mapPoint ${Game.stage===0?'current':'done'}"
+<div class="mapPoint ${Game.stage===0?'current':''}"
 style="top:60%;left:40%">⚔</div>
 
 <div class="mapPoint ${Game.stage===1?'current':''}"
@@ -25,7 +25,7 @@ if(Game.currentCampaign==="RUS"){
 map.innerHTML=`
 <div class="worldMap">
 
-<div class="mapPoint ${Game.stage===0?'current':'done'}"
+<div class="mapPoint ${Game.stage===0?'current':''}"
 style="top:50%;left:50%">🛡</div>
 
 <div class="mapPoint ${Game.stage===1?'current':''}"
