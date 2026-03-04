@@ -1,99 +1,129 @@
-const Achievements = {
+const Achievements={
 
 list:{
 
-firstAttack:"Первая атака",
-firstSiege:"Первая осада",
-firstHeal:"Первое лечение",
-firstSpecial:"Первый спецудар",
+firstAttack:"Первая кровь — совершить первую атаку",
+firstSiege:"Разрушитель — впервые атаковать стены",
+firstHeal:"Лекарь — впервые восстановить здоровье",
+firstSpecial:"Мастер удара — использовать спецудар",
 
-firstCity:"Захватить первый город",
-twoCities:"Захватить 2 города",
-fiveCities:"Захватить 5 городов",
+firstCity:"Первый город — захватить город",
+threeCities:"Завоеватель — захватить 3 города",
+allEurope:"Властелин Европы — завершить кампанию Европы",
+allRus:"Князь Руси — завершить кампанию Руси",
 
-tenWalls:"Разрушить 10 стен",
+wallBreaker:"Осадный мастер — разрушить стены 10 раз",
+tenVictories:"Грозный полководец — победить 10 гарнизонов",
 
-europeStart:"Начать кампанию Европы",
-rusStart:"Начать кампанию Руси",
+quizMaster:"Историк — правильно ответить на вопрос",
+quizFive:"Учёный — ответить на 5 вопросов",
 
-englandArmy:"Играть за Англию",
-franceArmy:"Играть за Францию",
-rusArmy:"Играть за Русь",
-mongolsArmy:"Играть за Монголов",
-vikingsArmy:"Играть за Викингов",
+cardReader:"Исследователь — открыть карточки истории",
 
-campaignWin:"Завершить кампанию",
+survivor:"Выживший — победить с HP ниже 10",
+fullHealth:"Непобедимый — закончить бой с полным HP",
 
-warLord:"Выиграть 10 битв",
+tpMaster:"Мастер тактики — накопить 5 TP",
+specialKill:"Финишер — победить спецударом",
 
-historian:"Открыть историческую карточку",
+wallDestroy:"Разрушитель крепостей — довести стены до 0",
 
-quizMaster:"Ответить правильно на викторину"
+longBattle:"Долгая осада — бой больше 10 ходов",
+
+ultimate:"Легенда — открыть 10 достижений"
 
 },
 
-unlocked: JSON.parse(localStorage.getItem("achievements") || "{}"),
+unlocked:{},
 
-stats: JSON.parse(localStorage.getItem("stats") || "{}"),
+/* ---------- загрузка ---------- */
+
+load(){
+
+let data=localStorage.getItem("castleluckAchievements")
+
+if(data){
+
+this.unlocked=JSON.parse(data)
+
+}else{
+
+this.unlocked={}
+
+}
+
+},
+
+/* ---------- сохранение ---------- */
 
 save(){
 
 localStorage.setItem(
-"achievements",
+"castleluckAchievements",
 JSON.stringify(this.unlocked)
 )
 
-localStorage.setItem(
-"stats",
-JSON.stringify(this.stats)
-)
-
 },
+
+/* ---------- открытие ---------- */
 
 unlock(id){
 
-if(!this.list[id]) return
-
 if(this.unlocked[id]) return
 
-this.unlocked[id] = true
+this.unlocked[id]=true
 
 this.save()
 
-UI.log("🏆 Достижение: " + this.list[id])
+alert("🏆 Достижение: "+this.list[id])
 
 },
 
-addStat(name,value=1){
-
-if(!this.stats[name])
-this.stats[name]=0
-
-this.stats[name]+=value
-
-this.check()
-
-this.save()
-
-},
+/* ---------- проверки ---------- */
 
 check(){
 
-if((this.stats.cities||0)>=1)
+/* первый город */
+
+if(Game.stageIndex===1)
 this.unlock("firstCity")
 
-if((this.stats.cities||0)>=2)
-this.unlock("twoCities")
+/* 3 города */
 
-if((this.stats.cities||0)>=5)
-this.unlock("fiveCities")
+if(Game.stageIndex===3)
+this.unlock("threeCities")
 
-if((this.stats.walls||0)>=10)
-this.unlock("tenWalls")
+/* стены разрушены */
 
-if((this.stats.wins||0)>=10)
-this.unlock("warLord")
+if(Game.walls===0)
+this.unlock("wallDestroy")
+
+/* мало HP */
+
+if(Game.player.hp>0 && Game.player.hp<10)
+this.unlock("survivor")
+
+/* полный HP */
+
+if(Game.player.hp===100)
+this.unlock("fullHealth")
+
+/* TP */
+
+if(Game.player.tp>=5)
+this.unlock("tpMaster")
+
+/* легенда */
+
+let count=Object.keys(this.unlocked).length
+
+if(count>=10)
+this.unlock("ultimate")
 
 }
 
 }
+
+/* загрузка достижений при старте */
+
+Achievements.load()
