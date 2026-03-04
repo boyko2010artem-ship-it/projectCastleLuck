@@ -12,6 +12,30 @@ max-width:500px;
 margin:auto;
 padding:16px;
 }
+.worldMap{
+position:relative;
+height:200px;
+border-radius:20px;
+background:
+radial-gradient(circle at 40% 60%,#1e293b 20%,transparent 21%),
+radial-gradient(circle at 55% 50%,#1e293b 20%,transparent 21%),
+linear-gradient(180deg,#0f172a,#020617);
+overflow:hidden;
+}
+
+.mapPoint{
+position:absolute;
+font-size:24px;
+transform:translate(-50%,-50%);
+}
+
+.mapPoint.done{
+opacity:0.4;
+}
+
+.mapPoint.current{
+transform:translate(-50%,-50%) scale(1.4);
+}
 
 header{
 text-align:center;
