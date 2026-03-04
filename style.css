@@ -8,7 +8,7 @@ padding-bottom:env(safe-area-inset-bottom);
 }
 
 .app{
-max-width:500px;
+max-width:520px;
 margin:auto;
 padding:16px;
 }
@@ -25,7 +25,9 @@ flex-direction:column;
 gap:18px;
 }
 
-.hidden{display:none;}
+.hidden{
+display:none;
+}
 
 button{
 padding:14px;
@@ -76,22 +78,26 @@ min-height:50px;
 text-align:center;
 }
 
+/* карта */
+
 .worldMap{
 position:relative;
-height:200px;
-border-radius:20px;
+height:220px;
 background:linear-gradient(180deg,#0f172a,#020617);
+border-radius:20px;
 }
 
 .mapPoint{
 position:absolute;
-font-size:24px;
+font-size:28px;
 transform:translate(-50%,-50%);
 }
 
 .mapPoint.current{
-transform:translate(-50%,-50%) scale(1.4);
+transform:translate(-50%,-50%) scale(1.5);
 }
+
+/* победа */
 
 .victory{
 position:fixed;
@@ -102,14 +108,18 @@ align-items:center;
 background:rgba(0,0,0,0.9);
 }
 
-.victory.hidden{display:none;}
+.victory.hidden{
+display:none;
+}
 
 .victory-content{
+background:#1e40af;
 padding:30px;
 border-radius:20px;
-background:#1e40af;
 text-align:center;
 }
+
+/* историческая карточка */
 
 .modal{
 position:fixed;
@@ -120,7 +130,9 @@ justify-content:center;
 align-items:center;
 }
 
-.modal.hidden{display:none;}
+.modal.hidden{
+display:none;
+}
 
 .modal-content{
 background:#1e293b;
@@ -128,4 +140,26 @@ padding:20px;
 border-radius:18px;
 width:85%;
 text-align:center;
+}
+
+/* достижения */
+
+.achievementPopup{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:#1e40af;
+padding:12px 20px;
+border-radius:12px;
+animation:popup 3s forwards;
+}
+
+@keyframes popup{
+
+0%{opacity:0;top:-50px}
+20%{opacity:1;top:20px}
+80%{opacity:1}
+100%{opacity:0}
+
 }
