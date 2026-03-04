@@ -2,39 +2,27 @@ const MapSystem={
 
 render(){
 
-const map=document.getElementById("map");
+const map=document.getElementById("map")
 
-if(Game.currentCampaign==="EUROPE"){
+let html=`<div class="worldMap">`
 
-map.innerHTML=`
-<div class="worldMap">
+Game.campaign.forEach((stage,i)=>{
 
-<div class="mapPoint ${Game.stage===0?'current':''}"
-style="top:60%;left:40%">⚔</div>
+let left=25+(i*20)
+let top=60-(i*10)
 
-<div class="mapPoint ${Game.stage===1?'current':''}"
-style="top:55%;left:55%">🏰</div>
-
+html+=`
+<div class="mapPoint ${i===Game.stage?'current':''}"
+style="top:${top}%;left:${left}%">
+⚔
 </div>
-`;
+`
 
-}
+})
 
-if(Game.currentCampaign==="RUS"){
+html+=`</div>`
 
-map.innerHTML=`
-<div class="worldMap">
-
-<div class="mapPoint ${Game.stage===0?'current':''}"
-style="top:50%;left:50%">🛡</div>
-
-<div class="mapPoint ${Game.stage===1?'current':''}"
-style="top:45%;left:60%">⚔</div>
-
-</div>
-`;
-
-}
+map.innerHTML=html
 
 }
 
