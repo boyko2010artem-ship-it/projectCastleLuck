@@ -1,9 +1,8 @@
-const Game = {
+const Game={
 
-campaign:[],
-stage:0,
-
-army:null,
+campaign:null,
+stageIndex:0,
+currentStage:null,
 
 player:{
 hp:100,
@@ -11,69 +10,83 @@ tp:0
 },
 
 enemy:{
-hp:0
+hp:100
 },
 
-walls:0,
+walls:100,
 
-/* выбор кампании */
+/* ---------- старт кампании ---------- */
 
-chooseCampaign(name){
+startCampaign(id){
 
-this.campaign=DATA[name]
+this.campaign=DATA[id]
+
+this.stageIndex=0
 
 UI.showArmies()
 
 },
 
-/* выбор армии */
+/* ---------- выбор армии ---------- */
 
 chooseArmy(id){
 
 this.army=ARMIES[id]
 
-this.stage=0
-
 UI.startGame()
 
-this.startStage()
+this.loadStage()
 
 },
 
-/* начало города */
+/* ---------- загрузка города ---------- */
 
-startStage(){
+loadStage(){
 
-let s=this.campaign[this.stage]
+this.currentStage=this.campaign[this.stageIndex]
 
-cityName.innerText=s.city
+this.enemy.hp=this.currentStage.garrison
 
-this.player.hp=this.army.hp
-this.enemy.hp=s.garrison
-this.walls=s.walls
+this.walls=this.currentStage.walls
 
+this.player.hp=100
 this.player.tp=0
-
-MapSystem.render()
 
 this.updateWalls()
 
 UI.update()
 
-UI.log("Началась осада города "+s.city)
+UI.log("Осада города "+this.currentStage.city)
+
+this.renderMap()
 
 },
 
-/* ---------- обновление стен ---------- */
+/* ---------- карта ---------- */
 
-updateWalls(){
+renderMap(){
 
-let wall=document.getElementById("wallVisual")
+let map=document.getElementById("map")
 
-if(this.walls>35) wall.className="wall1"
-else if(this.walls>25) wall.className="wall2"
-else if(this.walls>10) wall.className="wall3"
-else wall.className="wall4"
+let html=""
+
+this.campaign.forEach((s,i)=>{
+
+let cls="city"
+
+if(i<this.stageIndex) cls+=" conquered"
+if(i===this.stageIndex) cls+=" current"
+
+html+=`
+<div class="${cls}">
+<div class="icon">🏰</div>
+<div class="name">${s.city}</div>
+</div>
+`
+
+})
+
+map.innerHTML=html
 
 },
 
@@ -81,17 +94,25 @@ else wall.className="wall4"
 
 attack(){
 
-let dmg=this.army.attack
+let dmg=10
 
 this.enemy.hp-=dmg
 
-UI.log("Вы атаковали гарнизон на "+dmg)
+UI.log("Вы атаковали на "+dmg)
 
 AudioSystem.attack()
 
-this.animateHit(enemyBar)
+enemyBar.classList.add("hit")
 
-this.turn()
+setTimeout(()=>{
+
+enemyBar.classList.remove("hit")
+
+},300)
+
+this.player.tp++
+
+this.afterPlayerTurn()
 
 },
 
@@ -105,7 +126,7 @@ this.walls-=dmg
 
 if(this.walls<0) this.walls=0
 
-UI.log("Вы разрушаете стены на "+dmg)
+UI.log("Вы разрушаете стены")
 
 AudioSystem.siege()
 
@@ -113,7 +134,9 @@ this.animateWall()
 
 this.updateWalls()
 
-this.turn()
+this.player.tp++
+
+this.afterPlayerTurn()
 
 },
 
@@ -121,110 +144,71 @@ this.turn()
 
 heal(){
 
-if(this.player.tp<1){
+let heal=10
 
-UI.log("Недостаточно очков действий")
+this.player.hp+=heal
 
-return
+if(this.player.hp>100) this.player.hp=100
 
-}
-
-this.player.hp+=10
-
-if(this.player.hp>100)
-this.player.hp=100
-
-this.player.tp--
+UI.log("Вы лечитесь "+heal)
 
 AudioSystem.heal()
 
-UI.log("Вы лечитесь")
+this.player.tp++
 
-this.turn()
+this.afterPlayerTurn()
 
 },
 
-/* ---------- спецудар ---------- */
+/* ---------- спец атака ---------- */
 
 special(){
 
-if(this.player.tp<2){
+if(this.player.tp<3){
 
-UI.log("Нужно 2 очка действий")
+UI.log("Недостаточно TP")
 
 return
 
 }
 
-this.player.tp-=2
-
-let dmg=30
+let dmg=25
 
 this.enemy.hp-=dmg
 
-UI.log("Мощный удар "+dmg)
+this.player.tp=0
+
+UI.log("Спецудар "+dmg)
 
 AudioSystem.special()
 
-this.animateHit(enemyBar)
-
-this.turn()
-
-},
-
-/* ---------- анимация удара ---------- */
-
-animateHit(el){
-
-el.classList.add("hit")
+enemyBar.classList.add("hit")
 
 setTimeout(()=>{
 
-el.classList.remove("hit")
+enemyBar.classList.remove("hit")
 
 },300)
 
-},
-
-/* ---------- анимация стен ---------- */
-
-animateWall(){
-
-let wall=document.getElementById("wallVisual")
-
-wall.classList.add("wallShake")
-
-setTimeout(()=>{
-
-wall.classList.remove("wallShake")
-
-},350)
+this.afterPlayerTurn()
 
 },
 
-/* ---------- ход ---------- */
+/* ---------- после хода ---------- */
 
-turn(){
-
-this.player.tp++
+afterPlayerTurn(){
 
 UI.update()
 
-/* победа */
+Achievements.check()
 
-if(this.enemy.hp<=0 && this.walls<=0){
+if(this.enemy.hp<=0){
 
-setTimeout(()=>{
-
-this.victory()
-
-},500)
+UI.showVictory(this.currentStage.city)
 
 return
 
 }
-
-/* ход AI */
 
 setTimeout(()=>{
 
@@ -232,31 +216,25 @@ AI.turn()
 
 UI.update()
 
-this.checkLose()
+if(this.player.hp<=0){
 
-},800)
+alert("Вы проиграли")
 
-},
+location.reload()
 
-/* ---------- победа ---------- */
+}
 
-victory(){
-
-AudioSystem.victory()
-
-let stage=this.campaign[this.stage]
-
-UI.showHistory(stage)
+},600)
 
 },
 
-/* ---------- следующий город ---------- */
+/* ---------- продолжить кампанию ---------- */
 
 continueCampaign(){
 
-this.stage++
+this.stageIndex++
 
-if(this.stage>=this.campaign.length){
+if(this.stageIndex>=this.campaign.length){
 
 alert("Кампания завершена!")
 
@@ -266,25 +244,59 @@ return
 
 }
 
-game.classList.remove("hidden")
-
-this.startStage()
+this.loadStage()
 
 },
 
-/* ---------- поражение ---------- */
+/* ---------- стены ---------- */
 
-checkLose(){
+updateWalls(){
 
-if(this.player.hp<=0){
+let wall=document.getElementById("wallVisual")
 
-AudioSystem.lose()
+wall.className=""
 
-alert("Вы проиграли осаду")
+if(this.walls>75) wall.classList.add("wall1")
+else if(this.walls>50) wall.classList.add("wall2")
+else if(this.walls>25) wall.classList.add("wall3")
+else wall.classList.add("wall4")
 
-location.reload()
+document.getElementById("wallBar").style.width=this.walls+"%"
+
+},
+
+/* ---------- анимация стен ---------- */
+
+animateWall(){
+
+let wall=document.getElementById("wallVisual")
+
+wall.classList.add("wallBreak")
+
+for(let i=0;i<6;i++){
+
+let stone=document.createElement("div")
+
+stone.className="stone"
+
+stone.style.left=(70+Math.random()*40)+"px"
+stone.style.top="80px"
+
+document.getElementById("castle").appendChild(stone)
+
+setTimeout(()=>{
+
+stone.remove()
+
+},700)
 
 }
+
+setTimeout(()=>{
+
+wall.classList.remove("wallBreak")
+
+},350)
 
 }
 
