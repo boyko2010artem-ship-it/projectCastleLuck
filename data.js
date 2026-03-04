@@ -1,16 +1,47 @@
-const Data = {
+const Data={
+
 campaigns:{
+
 EUROPE:[
-{title:"Азенкур (1415)",desc:"Английские лучники победили французов.",
-facts:["Генрих V","Лучники"],wiki:"https://ru.wikipedia.org/wiki/Битва_при_Азенкуре",difficulty:1},
-{title:"Константинополь (1453)",desc:"Османы использовали артиллерию.",
-facts:["Мехмед II"],wiki:"https://ru.wikipedia.org/wiki/Падение_Константинополя",difficulty:3}
-],
-RUS:[
-{title:"Невская битва (1240)",desc:"Победа Александра Невского.",
-facts:["1240 год"],wiki:"https://ru.wikipedia.org/wiki/Невская_битва",difficulty:2},
-{title:"Куликово поле (1380)",desc:"Победа над Ордой.",
-facts:["Дмитрий Донской"],wiki:"https://ru.wikipedia.org/wiki/Куликовская_битва",difficulty:4}
-]
+
+{
+title:"Азенкур",
+desc:"Английские лучники победили французскую армию.",
+facts:["1415 год","Генрих V","Лучники решили исход битвы"],
+wiki:"https://ru.wikipedia.org/wiki/Битва_при_Азенкуре",
+difficulty:1
+},
+
+{
+title:"Константинополь",
+desc:"Османы использовали мощную артиллерию.",
+facts:["1453","Мехмед II"],
+wiki:"https://ru.wikipedia.org/wiki/Падение_Константинополя",
+difficulty:3
 }
-};
+
+],
+
+RUS:[
+
+{
+title:"Невская битва",
+desc:"Александр Невский победил шведов.",
+facts:["1240"],
+wiki:"https://ru.wikipedia.org/wiki/Невская_битва",
+difficulty:2
+},
+
+{
+title:"Куликово поле",
+desc:"Русские войска победили Орду.",
+facts:["1380","Дмитрий Донской"],
+wiki:"https://ru.wikipedia.org/wiki/Куликовская_битва",
+difficulty:4
+}
+
+]
+
+}
+
+}
