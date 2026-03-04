@@ -1,9 +1,10 @@
 const UI={
 
+logLines:[],
+
 showCampaigns(){
 
 menu.classList.add("hidden")
-
 campaigns.classList.remove("hidden")
 
 },
@@ -11,7 +12,6 @@ campaigns.classList.remove("hidden")
 showArmies(){
 
 campaigns.classList.add("hidden")
-
 armies.classList.remove("hidden")
 
 let html=""
@@ -22,9 +22,8 @@ let army=ARMIES[id]
 
 html+=`
 <button onclick="Game.chooseArmy('${id}')">
-${army.name}
-<br>
-<small>${army.description}</small>
+<h3>${army.name}</h3>
+<p>${army.description}</p>
 </button>
 `
 
@@ -37,48 +36,48 @@ armyList.innerHTML=html
 startGame(){
 
 armies.classList.add("hidden")
-
 game.classList.remove("hidden")
 
 },
 
 update(){
 
-playerBar.style.width=Game.player.hp+"%"
-
-enemyBar.style.width=Game.enemy.hp+"%"
-
-wallBar.style.width=Game.walls+"%"
+playerBar.style.width=Math.max(Game.player.hp,0)+"%"
+enemyBar.style.width=Math.max(Game.enemy.hp,0)+"%"
+wallBar.style.width=Math.max(Game.walls,0)+"%"
 
 tpValue.innerText=Game.player.tp
 
 },
 
-log(t){
+log(text){
 
-log.innerText=t
+this.logLines.unshift(text)
+
+if(this.logLines.length>6)
+this.logLines.pop()
+
+log.innerHTML=this.logLines.join("<br>")
 
 },
 
-showHistory(s){
+showHistory(stage){
 
 game.classList.add("hidden")
-
 history.classList.remove("hidden")
 
-histTitle.innerText=s.title
-
-histDesc.innerText=s.desc
+histTitle.innerText=stage.title
+histDesc.innerText=stage.desc
 
 histFacts.innerHTML=""
 
-s.facts.forEach(f=>{
+stage.facts.forEach(f=>{
 
 histFacts.innerHTML+="<li>"+f+"</li>"
 
 })
 
-wiki.href=s.wiki
+wiki.href=stage.wiki
 
 },
 
@@ -118,7 +117,7 @@ quiz.classList.add("hidden")
 
 if(i===correct){
 
-alert("Правильно!")
+alert("Правильно! 🎉")
 
 }else{
 
@@ -135,7 +134,6 @@ game.classList.remove("hidden")
 showCards(){
 
 menu.classList.add("hidden")
-
 cards.classList.remove("hidden")
 
 let html=""
@@ -144,8 +142,11 @@ CARDS.forEach(c=>{
 
 html+=`
 <div class="card">
+
 <h3>${c.title}</h3>
+
 <p>${c.text}</p>
+
 </div>
 `
 
@@ -158,18 +159,19 @@ cardsList.innerHTML=html
 showAchievements(){
 
 menu.classList.add("hidden")
-
 achievements.classList.remove("hidden")
 
 let html=""
 
 for(let id in Achievements.list){
 
-let ok=Achievements.unlocked[id]
+let unlocked=Achievements.unlocked[id]
 
 html+=`
 <div>
-${ok?"✅":"⬜"} ${Achievements.list[id]}
+
+${unlocked?"✅":"⬜"} ${Achievements.list[id]}
+
 </div>
 `
 
@@ -182,9 +184,7 @@ achList.innerHTML=html
 back(){
 
 cards.classList.add("hidden")
-
 achievements.classList.add("hidden")
-
 menu.classList.remove("hidden")
 
 }
