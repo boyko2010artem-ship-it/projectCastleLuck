@@ -1,4 +1,4 @@
-const Game={
+const Game = {
 
 campaign:[],
 stage:0,
@@ -17,9 +17,13 @@ army:null,
 
 chooseCampaign(name){
 
-this.campaign=DATA[name]
+this.campaign = DATA[name]
 
-Achievements.unlock(name==="europe"?"europeStart":"rusStart")
+if(name==="europe")
+Achievements.unlock("europeStart")
+
+if(name==="rus")
+Achievements.unlock("rusStart")
 
 UI.showArmies()
 
@@ -27,15 +31,13 @@ UI.showArmies()
 
 chooseArmy(id){
 
-this.army=ARMIES[id]
+this.army = ARMIES[id]
 
 Achievements.unlock(id+"Army")
 
 UI.startGame()
 
-this.stage=0
-
-AudioSystem.music()
+this.stage = 0
 
 this.startStage()
 
@@ -43,14 +45,14 @@ this.startStage()
 
 startStage(){
 
-let s=this.campaign[this.stage]
+let stage = this.campaign[this.stage]
 
-cityName.innerText=s.city
+cityName.innerText = stage.city
 
-this.player.hp=this.army.hp
-this.enemy.hp=s.garrison
-this.walls=s.walls
-this.player.tp=0
+this.player.hp = this.army.hp
+this.enemy.hp = stage.garrison
+this.walls = stage.walls
+this.player.tp = 0
 
 MapSystem.render()
 
@@ -58,18 +60,18 @@ this.updateWalls()
 
 UI.update()
 
-UI.log("Началась осада города "+s.city)
+UI.log("Осада города " + stage.city)
 
 },
 
 updateWalls(){
 
-let el=document.getElementById("wallVisual")
+let wall = document.getElementById("wallVisual")
 
-if(this.walls>35) el.className="wall1"
-else if(this.walls>25) el.className="wall2"
-else if(this.walls>10) el.className="wall3"
-else el.className="wall4"
+if(this.walls>35) wall.className="wall1"
+else if(this.walls>25) wall.className="wall2"
+else if(this.walls>10) wall.className="wall3"
+else wall.className="wall4"
 
 },
 
@@ -77,11 +79,11 @@ attack(){
 
 Achievements.unlock("firstAttack")
 
-let dmg=this.army.attack
+let dmg = this.army.attack
 
-this.enemy.hp-=dmg
+this.enemy.hp -= dmg
 
-UI.log("Вы атаковали гарнизон "+dmg)
+UI.log("Вы атаковали гарнизон: " + dmg)
 
 AudioSystem.attack()
 
@@ -95,15 +97,15 @@ siege(){
 
 Achievements.unlock("firstSiege")
 
-let dmg=12
+let dmg = 12
 
-this.walls-=dmg
+this.walls -= dmg
 
-if(this.walls<0) this.walls=0
+if(this.walls<0) this.walls = 0
 
 Achievements.addStat("walls",1)
 
-UI.log("Вы наносите удар по стенам "+dmg)
+UI.log("Вы разрушаете стены: " + dmg)
 
 AudioSystem.siege()
 
@@ -119,20 +121,13 @@ heal(){
 
 Achievements.unlock("firstHeal")
 
-if(this.player.tp<1){
-
+if(this.player.tp < 1){
 UI.log("Недостаточно очков действий")
-
 return
-
 }
 
-this.player.hp+=10
-
-if(this.player.hp>100)
-this.player.hp=100
-
-this.player.tp--
+this.player.hp += 10
+this.player.tp --
 
 AudioSystem.heal()
 
@@ -146,23 +141,20 @@ special(){
 
 Achievements.unlock("firstSpecial")
 
-if(this.player.tp<2){
-
-UI.log("Нужно 2 очка действия")
-
+if(this.player.tp < 2){
+UI.log("Нужно 2 очка действий")
 return
-
 }
 
-this.player.tp-=2
+this.player.tp -= 2
 
-let dmg=30
+let dmg = 30
 
-this.enemy.hp-=dmg
+this.enemy.hp -= dmg
 
 AudioSystem.special()
 
-UI.log("Мощный удар "+dmg)
+UI.log("Спецудар: " + dmg)
 
 this.animateHit(enemyBar)
 
@@ -175,23 +167,19 @@ animateHit(el){
 el.classList.add("hit")
 
 setTimeout(()=>{
-
 el.classList.remove("hit")
-
 },300)
 
 },
 
 animateWall(){
 
-let wall=document.getElementById("wallVisual")
+let wall = document.getElementById("wallVisual")
 
 wall.classList.add("wallShake")
 
 setTimeout(()=>{
-
 wall.classList.remove("wallShake")
-
 },350)
 
 },
@@ -202,44 +190,42 @@ this.player.tp++
 
 UI.update()
 
-// победа
+/* победа */
 
-if(this.walls<=0 && this.enemy.hp<=0){
+if(this.enemy.hp<=0 && this.walls<=0){
 
 Achievements.addStat("cities",1)
 Achievements.addStat("wins",1)
 
 setTimeout(()=>{
-
-this.showVictory()
-
+this.victory()
 },500)
 
 return
 
 }
 
-// ход AI
+/* ход AI */
 
 setTimeout(()=>{
 
 AI.turn()
 
-this.checkLose()
-
 UI.update()
+
+this.checkLose()
 
 },800)
 
 },
 
-showVictory(){
+victory(){
 
 AudioSystem.victory()
 
-let s=this.campaign[this.stage]
+let stage = this.campaign[this.stage]
 
-UI.showHistory(s)
+UI.showHistory(stage)
 
 },
 
@@ -247,7 +233,7 @@ continueCampaign(){
 
 this.stage++
 
-if(this.stage>=this.campaign.length){
+if(this.stage >= this.campaign.length){
 
 Achievements.unlock("campaignWin")
 
