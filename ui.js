@@ -78,6 +78,7 @@ histFacts.innerHTML+="<li>"+f+"</li>"
 })
 
 wiki.href=stage.wiki
+wiki.innerText="Открыть статью на Wikipedia"
 
 },
 
@@ -85,7 +86,7 @@ closeHistory(){
 
 history.classList.add("hidden")
 
-UI.showQuiz()
+this.showQuiz()
 
 },
 
@@ -118,6 +119,7 @@ quiz.classList.add("hidden")
 if(i===correct){
 
 alert("Правильно! 🎉")
+Achievements.unlock("quizMaster")
 
 }else{
 
@@ -125,7 +127,7 @@ alert("Неправильно")
 
 }
 
-Game.next()
+Game.continueCampaign()
 
 game.classList.remove("hidden")
 
@@ -153,6 +155,8 @@ html+=`
 })
 
 cardsList.innerHTML=html
+
+Achievements.unlock("historian")
 
 },
 
