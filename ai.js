@@ -1,30 +1,28 @@
-const AI = {
+const AI={
 
 turn(){
 
 let action=Math.random()
 
-/* если мало здоровья — шанс лечения */
+/* лечение если мало здоровья */
 
 if(Game.enemy.hp<30 && action<0.3){
 
 this.heal()
-
 return
 
 }
 
-/* если стены ещё стоят — иногда осада */
+/* осада если есть стены */
 
 if(Game.walls>0 && action<0.6){
 
 this.siege()
-
 return
 
 }
 
-/* иначе атака */
+/* обычная атака */
 
 this.attack()
 
@@ -34,19 +32,19 @@ this.attack()
 
 attack(){
 
-let dmg=8
+let dmg=8+Math.floor(Math.random()*4)
 
 Game.player.hp-=dmg
 
-UI.log("Гарнизон атакует вас на "+dmg)
+UI.log("Гарнизон атакует на "+dmg)
 
 AudioSystem.attack()
 
-playerBar.classList.add("hit")
+document.getElementById("playerBar").classList.add("hit")
 
 setTimeout(()=>{
 
-playerBar.classList.remove("hit")
+document.getElementById("playerBar").classList.remove("hit")
 
 },300)
 
@@ -56,13 +54,13 @@ playerBar.classList.remove("hit")
 
 siege(){
 
-let dmg=6
+let dmg=6+Math.floor(Math.random()*4)
 
 Game.walls-=dmg
 
 if(Game.walls<0) Game.walls=0
 
-UI.log("Гарнизон укрепляет оборону и повреждает стены")
+UI.log("Гарнизон повреждает стены")
 
 AudioSystem.siege()
 
@@ -76,7 +74,7 @@ Game.updateWalls()
 
 heal(){
 
-let heal=8
+let heal=8+Math.floor(Math.random()*4)
 
 Game.enemy.hp+=heal
 
