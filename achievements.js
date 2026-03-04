@@ -11,10 +11,7 @@ firstCity:"Захватить первый город",
 twoCities:"Захватить 2 города",
 fiveCities:"Захватить 5 городов",
 
-destroyWalls:"Разрушить стены",
 tenWalls:"Разрушить 10 стен",
-
-bigDamage:"Нанести 50 урона",
 
 europeStart:"Начать кампанию Европы",
 rusStart:"Начать кампанию Руси",
@@ -26,9 +23,11 @@ mongolsArmy:"Играть за Монголов",
 vikingsArmy:"Играть за Викингов",
 
 campaignWin:"Завершить кампанию",
+
 warLord:"Выиграть 10 битв",
 
 historian:"Открыть историческую карточку",
+
 quizMaster:"Ответить правильно на викторину"
 
 },
@@ -39,8 +38,15 @@ stats:JSON.parse(localStorage.getItem("stats")||"{}"),
 
 save(){
 
-localStorage.setItem("achievements",JSON.stringify(this.unlocked))
-localStorage.setItem("stats",JSON.stringify(this.stats))
+localStorage.setItem(
+"achievements",
+JSON.stringify(this.unlocked)
+)
+
+localStorage.setItem(
+"stats",
+JSON.stringify(this.stats)
+)
 
 },
 
@@ -80,11 +86,11 @@ this.unlock("twoCities")
 if(this.stats.cities>=5)
 this.unlock("fiveCities")
 
-if(this.stats.wins>=10)
-this.unlock("warLord")
-
 if(this.stats.walls>=10)
 this.unlock("tenWalls")
+
+if(this.stats.wins>=10)
+this.unlock("warLord")
 
 }
 
