@@ -1,4 +1,4 @@
-const AudioSystem={
+const AudioSystem = {
 
 ctx:null,
 
@@ -6,88 +6,98 @@ init(){
 
 if(!this.ctx){
 
-this.ctx=new (window.AudioContext||window.webkitAudioContext)()
+this.ctx=new(window.AudioContext||window.webkitAudioContext)()
 
 }
 
 },
 
-tone(freq,time=0.2,type="sine"){
+tone(freq,time){
 
 this.init()
 
-let o=this.ctx.createOscillator()
-let g=this.ctx.createGain()
+let osc=this.ctx.createOscillator()
+let gain=this.ctx.createGain()
 
-o.type=type
-o.frequency.value=freq
+osc.connect(gain)
+gain.connect(this.ctx.destination)
 
-o.connect(g)
-g.connect(this.ctx.destination)
+osc.frequency.value=freq
+osc.type="square"
 
-o.start()
+osc.start()
 
-g.gain.setValueAtTime(0.2,this.ctx.currentTime)
+gain.gain.setValueAtTime(0.2,this.ctx.currentTime)
+gain.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+time)
 
-g.gain.exponentialRampToValueAtTime(
-0.001,
-this.ctx.currentTime+time
-)
-
-o.stop(this.ctx.currentTime+time)
+osc.stop(this.ctx.currentTime+time)
 
 },
+
+/* атака */
 
 attack(){
 
-this.tone(420,0.1,"square")
-this.tone(280,0.15,"square")
+this.tone(220,0.15)
 
 },
+
+/* осада */
 
 siege(){
 
-this.tone(120,0.4,"sawtooth")
+this.tone(120,0.25)
 
 },
+
+/* лечение */
 
 heal(){
 
-this.tone(600,0.2)
-this.tone(800,0.2)
+this.tone(500,0.2)
 
 },
+
+/* спецудар */
 
 special(){
 
-this.tone(80,0.6,"sawtooth")
+this.tone(300,0.3)
+this.tone(200,0.3)
 
 },
+
+/* победа */
 
 victory(){
 
+this.tone(500,0.2)
+
+setTimeout(()=>{
+
 this.tone(700,0.2)
-setTimeout(()=>this.tone(900,0.2),200)
-setTimeout(()=>this.tone(1100,0.3),400)
+
+},200)
+
+setTimeout(()=>{
+
+this.tone(900,0.3)
+
+},400)
 
 },
+
+/* поражение */
 
 lose(){
 
-this.tone(200,0.4,"square")
-setTimeout(()=>this.tone(150,0.5,"square"),200)
+this.tone(200,0.3)
 
-},
+setTimeout(()=>{
 
-music(){
+this.tone(150,0.4)
 
-this.init()
-
-setInterval(()=>{
-
-this.tone(300,0.2)
-
-},3000)
+},200)
 
 }
 
