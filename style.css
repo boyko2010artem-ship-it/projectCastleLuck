@@ -1,101 +1,86 @@
 body{
-margin:0;
-font-family:-apple-system;
-background:radial-gradient(circle,#1e293b,#000);
+font-family:system-ui;
+background:#0f172a;
 color:white;
-}
-
-.app{
-max-width:520px;
-margin:auto;
+text-align:center;
+margin:0;
 padding:20px;
 }
 
+.logo{
+font-size:40px;
+margin-bottom:20px;
+}
+
+button{
+padding:14px;
+margin:10px;
+border:none;
+border-radius:10px;
+font-size:18px;
+background:#2563eb;
+color:white;
+}
+
 .screen{
-display:flex;
-flex-direction:column;
-gap:16px;
+max-width:420px;
+margin:auto;
 }
 
 .hidden{
 display:none;
 }
 
-button{
-padding:14px;
-border:none;
-border-radius:14px;
-background:#2563eb;
-color:white;
-font-size:16px;
-}
-
-.card{
-background:rgba(255,255,255,0.1);
-padding:12px;
-border-radius:14px;
-}
-
-.hpbar{
-height:16px;
-background:#111;
+.hp{
+background:#1e293b;
+height:18px;
 border-radius:8px;
 overflow:hidden;
 }
 
-.hpbar div{
+#playerBar{
 height:100%;
+width:100%;
 background:#22c55e;
-transition:width .4s;
 }
 
-.actions{
-display:flex;
-gap:10px;
+#enemyBar{
+height:100%;
+width:100%;
+background:#ef4444;
 }
 
-.actions button{
-flex:1;
-border-radius:50%;
-height:60px;
-font-size:22px;
-}
-
-#log{
-background:black;
-padding:10px;
-border-radius:10px;
-text-align:center;
+#actions{
+margin-top:20px;
 }
 
 .modal{
+
 position:fixed;
-inset:0;
+left:0;
+top:0;
+width:100%;
+height:100%;
+
 background:black;
+
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+
+padding:20px;
+
 }
 
-.map{
-display:flex;
-gap:10px;
-justify-content:center;
-}
-
-.stage{
-font-size:26px;
-}
-
-.stage.current{
-transform:scale(1.5);
-}
-
-.hit{
-animation:hit .3s;
+.attackAnim{
+animation:hit .4s;
 }
 
 @keyframes hit{
-50%{transform:scale(1.3)}
+
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
+
 }
