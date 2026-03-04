@@ -12,14 +12,20 @@ playerTP.innerText=Game.player.tp
 },
 
 log(text){
-log.innerText=text
+
+document.getElementById("log").innerText=text
+
 },
 
 renderMap(){
+
 MapSystem.render()
+
 },
 
 showVictory(stats){
+
+Achievements.unlock("firstWin")
 
 victoryTitle.innerText="ПОБЕДА"
 
@@ -48,6 +54,22 @@ modalFacts.appendChild(li)
 modalLink.href=stage.wiki
 
 modal.classList.remove("hidden")
+
+},
+
+showAchievement(a){
+
+let el=document.createElement("div")
+
+el.className="achievementPopup"
+
+el.innerText="🏆 "+a.name
+
+document.body.appendChild(el)
+
+setTimeout(()=>{
+el.remove()
+},3000)
 
 }
 
