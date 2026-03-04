@@ -1,16 +1,13 @@
-const UI={
+const UI = {
 
 logLines:[],
 
 showCampaigns(){
-
 menu.classList.add("hidden")
 campaigns.classList.remove("hidden")
-
 },
 
 showArmies(){
-
 campaigns.classList.add("hidden")
 armies.classList.remove("hidden")
 
@@ -30,14 +27,11 @@ html+=`
 }
 
 armyList.innerHTML=html
-
 },
 
 startGame(){
-
 armies.classList.add("hidden")
 game.classList.remove("hidden")
-
 },
 
 update(){
@@ -47,7 +41,6 @@ enemyBar.style.width=Math.max(Game.enemy.hp,0)+"%"
 wallBar.style.width=Math.max(Game.walls,0)+"%"
 
 tpValue.innerText=Game.player.tp
-
 },
 
 log(text){
@@ -58,12 +51,14 @@ if(this.logLines.length>6)
 this.logLines.pop()
 
 log.innerHTML=this.logLines.join("<br>")
-
 },
+
+/* ---------- ИСТОРИЯ ---------- */
 
 showHistory(stage){
 
 game.classList.add("hidden")
+
 history.classList.remove("hidden")
 
 histTitle.innerText=stage.title
@@ -72,13 +67,25 @@ histDesc.innerText=stage.desc
 histFacts.innerHTML=""
 
 stage.facts.forEach(f=>{
-
 histFacts.innerHTML+="<li>"+f+"</li>"
-
 })
 
 wiki.href=stage.wiki
-wiki.innerText="Открыть статью на Wikipedia"
+
+/* добавляем кнопку */
+
+history.innerHTML+=`
+<br>
+<button id="continueBtn">Продолжить</button>
+`
+
+document
+.getElementById("continueBtn")
+.onclick=()=>{
+
+UI.closeHistory()
+
+}
 
 },
 
@@ -89,6 +96,8 @@ history.classList.add("hidden")
 this.showQuiz()
 
 },
+
+/* ---------- ВИКТОРИНА ---------- */
 
 showQuiz(){
 
@@ -118,7 +127,8 @@ quiz.classList.add("hidden")
 
 if(i===correct){
 
-alert("Правильно! 🎉")
+alert("Правильно!")
+
 Achievements.unlock("quizMaster")
 
 }else{
@@ -133,6 +143,8 @@ game.classList.remove("hidden")
 
 },
 
+/* ---------- КАРТОЧКИ ---------- */
+
 showCards(){
 
 menu.classList.add("hidden")
@@ -144,11 +156,8 @@ CARDS.forEach(c=>{
 
 html+=`
 <div class="card">
-
 <h3>${c.title}</h3>
-
 <p>${c.text}</p>
-
 </div>
 `
 
@@ -157,8 +166,9 @@ html+=`
 cardsList.innerHTML=html
 
 Achievements.unlock("historian")
-
 },
+
+/* ---------- ДОСТИЖЕНИЯ ---------- */
 
 showAchievements(){
 
@@ -173,16 +183,13 @@ let unlocked=Achievements.unlocked[id]
 
 html+=`
 <div>
-
 ${unlocked?"✅":"⬜"} ${Achievements.list[id]}
-
 </div>
 `
 
 }
 
 achList.innerHTML=html
-
 },
 
 back(){
