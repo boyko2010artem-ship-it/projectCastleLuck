@@ -3,6 +3,8 @@ const Game = {
 campaign:[],
 stage:0,
 
+army:null,
+
 player:{
 hp:100,
 tp:0
@@ -13,46 +15,44 @@ hp:0
 },
 
 walls:0,
-army:null,
+
+/* выбор кампании */
 
 chooseCampaign(name){
 
-this.campaign = DATA[name]
-
-if(name==="europe")
-Achievements.unlock("europeStart")
-
-if(name==="rus")
-Achievements.unlock("rusStart")
+this.campaign=DATA[name]
 
 UI.showArmies()
 
 },
 
+/* выбор армии */
+
 chooseArmy(id){
 
-this.army = ARMIES[id]
+this.army=ARMIES[id]
 
-Achievements.unlock(id+"Army")
+this.stage=0
 
 UI.startGame()
-
-this.stage = 0
 
 this.startStage()
 
 },
 
+/* начало города */
+
 startStage(){
 
-let stage = this.campaign[this.stage]
+let s=this.campaign[this.stage]
 
-cityName.innerText = stage.city
+cityName.innerText=s.city
 
-this.player.hp = this.army.hp
-this.enemy.hp = stage.garrison
-this.walls = stage.walls
-this.player.tp = 0
+this.player.hp=this.army.hp
+this.enemy.hp=s.garrison
+this.walls=s.walls
+
+this.player.tp=0
 
 MapSystem.render()
 
@@ -60,13 +60,15 @@ this.updateWalls()
 
 UI.update()
 
-UI.log("Осада города " + stage.city)
+UI.log("Началась осада города "+s.city)
 
 },
 
+/* ---------- обновление стен ---------- */
+
 updateWalls(){
 
-let wall = document.getElementById("wallVisual")
+let wall=document.getElementById("wallVisual")
 
 if(this.walls>35) wall.className="wall1"
 else if(this.walls>25) wall.className="wall2"
@@ -75,15 +77,15 @@ else wall.className="wall4"
 
 },
 
+/* ---------- атака ---------- */
+
 attack(){
 
-Achievements.unlock("firstAttack")
+let dmg=this.army.attack
 
-let dmg = this.army.attack
+this.enemy.hp-=dmg
 
-this.enemy.hp -= dmg
-
-UI.log("Вы атаковали гарнизон: " + dmg)
+UI.log("Вы атаковали гарнизон на "+dmg)
 
 AudioSystem.attack()
 
@@ -93,19 +95,17 @@ this.turn()
 
 },
 
+/* ---------- осада ---------- */
+
 siege(){
 
-Achievements.unlock("firstSiege")
+let dmg=12
 
-let dmg = 12
+this.walls-=dmg
 
-this.walls -= dmg
+if(this.walls<0) this.walls=0
 
-if(this.walls<0) this.walls = 0
-
-Achievements.addStat("walls",1)
-
-UI.log("Вы разрушаете стены: " + dmg)
+UI.log("Вы разрушаете стены на "+dmg)
 
 AudioSystem.siege()
 
@@ -117,17 +117,24 @@ this.turn()
 
 },
 
+/* ---------- лечение ---------- */
+
 heal(){
 
-Achievements.unlock("firstHeal")
+if(this.player.tp<1){
 
-if(this.player.tp < 1){
 UI.log("Недостаточно очков действий")
+
 return
+
 }
 
-this.player.hp += 10
-this.player.tp --
+this.player.hp+=10
+
+if(this.player.hp>100)
+this.player.hp=100
+
+this.player.tp--
 
 AudioSystem.heal()
 
@@ -137,24 +144,27 @@ this.turn()
 
 },
 
+/* ---------- спецудар ---------- */
+
 special(){
 
-Achievements.unlock("firstSpecial")
+if(this.player.tp<2){
 
-if(this.player.tp < 2){
 UI.log("Нужно 2 очка действий")
+
 return
+
 }
 
-this.player.tp -= 2
+this.player.tp-=2
 
-let dmg = 30
+let dmg=30
 
-this.enemy.hp -= dmg
+this.enemy.hp-=dmg
+
+UI.log("Мощный удар "+dmg)
 
 AudioSystem.special()
-
-UI.log("Спецудар: " + dmg)
 
 this.animateHit(enemyBar)
 
@@ -162,27 +172,37 @@ this.turn()
 
 },
 
+/* ---------- анимация удара ---------- */
+
 animateHit(el){
 
 el.classList.add("hit")
 
 setTimeout(()=>{
+
 el.classList.remove("hit")
+
 },300)
 
 },
 
+/* ---------- анимация стен ---------- */
+
 animateWall(){
 
-let wall = document.getElementById("wallVisual")
+let wall=document.getElementById("wallVisual")
 
 wall.classList.add("wallShake")
 
 setTimeout(()=>{
+
 wall.classList.remove("wallShake")
+
 },350)
 
 },
+
+/* ---------- ход ---------- */
 
 turn(){
 
@@ -194,11 +214,10 @@ UI.update()
 
 if(this.enemy.hp<=0 && this.walls<=0){
 
-Achievements.addStat("cities",1)
-Achievements.addStat("wins",1)
-
 setTimeout(()=>{
+
 this.victory()
+
 },500)
 
 return
@@ -219,23 +238,25 @@ this.checkLose()
 
 },
 
+/* ---------- победа ---------- */
+
 victory(){
 
 AudioSystem.victory()
 
-let stage = this.campaign[this.stage]
+let stage=this.campaign[this.stage]
 
 UI.showHistory(stage)
 
 },
 
+/* ---------- следующий город ---------- */
+
 continueCampaign(){
 
 this.stage++
 
-if(this.stage >= this.campaign.length){
-
-Achievements.unlock("campaignWin")
+if(this.stage>=this.campaign.length){
 
 alert("Кампания завершена!")
 
@@ -250,6 +271,8 @@ game.classList.remove("hidden")
 this.startStage()
 
 },
+
+/* ---------- поражение ---------- */
 
 checkLose(){
 
