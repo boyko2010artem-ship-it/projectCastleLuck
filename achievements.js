@@ -1,19 +1,22 @@
 const Achievements={
 
 list:{
+
 firstWin:"Первая победа",
-rocket:"Мастер ракет"
+rocket:"Ракетный удар",
+victory:"Победа в кампании"
+
 },
 
-unlocked:JSON.parse(localStorage.getItem("achievements")||"{}"),
+unlocked:JSON.parse(localStorage.getItem("ach")||"{}"),
 
 unlock(id){
 
-if(this.unlocked[id])return
+if(this.unlocked[id]) return
 
 this.unlocked[id]=true
 
-localStorage.setItem("achievements",JSON.stringify(this.unlocked))
+localStorage.setItem("ach",JSON.stringify(this.unlocked))
 
 }
 
