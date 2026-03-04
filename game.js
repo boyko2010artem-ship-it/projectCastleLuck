@@ -1,50 +1,18 @@
 const Game={
 
-campaign:null,
-stage:0,
-difficulty:1,
-
-army:null,
-
 player:{hp:100,tp:0},
 enemy:{hp:100,tp:0},
 
-chooseCampaign(c){
+campaign:[],
+stage:0,
+difficulty:1,
 
-this.campaign=Data.campaigns[c]
+startCampaign(type){
 
-playMenu.classList.add("hidden")
-armyMenu.classList.remove("hidden")
+UI.hideAll()
+gameScreen.classList.remove("hidden")
 
-let html=""
-
-Object.keys(Data.armies).forEach(k=>{
-
-let a=Data.armies[k]
-
-html+=`<button onclick="Game.chooseArmy('${k}')">${a.icon} ${a.name}</button>`
-
-})
-
-armyList.innerHTML=html
-
-},
-
-chooseArmy(k){
-
-this.army=Data.armies[k]
-
-armyMenu.classList.add("hidden")
-difficultyMenu.classList.remove("hidden")
-
-},
-
-startGame(diff){
-
-this.difficulty=diff
-
-difficultyMenu.classList.add("hidden")
-game.classList.remove("hidden")
+this.campaign=DATA[type]
 
 this.stage=0
 
@@ -56,50 +24,95 @@ loadStage(){
 
 let s=this.campaign[this.stage]
 
-stageTitle.innerText=s.title
+this.player.hp=100
+this.enemy.hp=100
+this.player.tp=0
 
-this.player={
-hp:this.army.hp,
-tp:0
-}
-
-this.enemy={
-hp:100,
-tp:0
-}
-
-MapSystem.render()
-
-UI.update()
+UI.showHistory(s)
 
 },
 
-playerAction(type){
+nextStage(){
 
-if(type==="attack"){
+this.stage++
 
-this.enemy.hp-=this.army.damage
-AudioSystem.beep(400)
+if(this.stage>=this.campaign.length){
 
-}
+alert("Кампания завершена")
 
-if(type==="heal" && this.player.tp>=1){
+UI.backMenu()
 
-this.player.hp+=10
-this.player.tp--
+return
 
 }
 
-if(type==="rocket" && this.player.tp>=2){
+this.loadStage()
 
-this.enemy.hp-=30
-this.player.tp-=2
+},
 
-Achievements.unlock("rocket")
+attack(){
 
-}
+let dmg=10+this.player.tp
+
+this.enemy.hp-=dmg
 
 this.player.tp++
+
+AudioSystem.attack()
+
+UI.log("Вы атаковали "+dmg)
+
+this.afterTurn()
+
+},
+
+build(){
+
+this.player.hp+=6
+
+this.player.tp++
+
+AudioSystem.heal()
+
+UI.log("Вы укрепили стены")
+
+this.afterTurn()
+
+},
+
+heal(){
+
+if(this.player.tp<1) return
+
+this.player.hp+=12
+
+this.player.tp--
+
+AudioSystem.heal()
+
+UI.log("Лечение")
+
+this.afterTurn()
+
+},
+
+rocket(){
+
+if(this.player.tp<2) return
+
+this.enemy.hp-=28
+
+this.player.tp-=2
+
+AudioSystem.rocket()
+
+UI.log("Ракетный удар")
+
+this.afterTurn()
+
+},
+
+afterTurn(){
 
 UI.update()
 
@@ -107,7 +120,7 @@ if(this.enemy.hp<=0){
 
 Achievements.unlock("firstWin")
 
-UI.showHistory(this.campaign[this.stage])
+setTimeout(()=>Game.nextStage(),1200)
 
 return
 
@@ -121,27 +134,13 @@ UI.update()
 
 if(this.player.hp<=0){
 
-alert("Вы проиграли")
-location.reload()
+alert("Поражение")
+
+UI.backMenu()
 
 }
 
 },700)
-
-},
-
-nextStage(){
-
-this.stage++
-
-if(this.stage>=this.campaign.length){
-
-alert("Кампания завершена")
-location.reload()
-
-}
-
-this.loadStage()
 
 }
 
