@@ -2,19 +2,31 @@ const UI = {
 
 logLines:[],
 
+/* вспомогательные функции */
+
+show(id){
+document.getElementById(id).classList.remove("hidden")
+},
+
+hide(id){
+document.getElementById(id).classList.add("hidden")
+},
+
 /* меню */
 
 showCampaigns(){
 
-menu.classList.add("hidden")
-campaigns.classList.remove("hidden")
+this.hide("menu")
+this.show("campaigns")
 
 },
 
 showArmies(){
 
-campaigns.classList.add("hidden")
-armies.classList.remove("hidden")
+this.hide("campaigns")
+this.show("armies")
+
+let armyList=document.getElementById("armyList")
 
 let html=""
 
@@ -37,25 +49,27 @@ armyList.innerHTML=html
 
 startGame(){
 
-armies.classList.add("hidden")
-game.classList.remove("hidden")
+this.hide("armies")
+this.show("game")
 
 },
 
 back(){
 
-campaigns.classList.add("hidden")
-armies.classList.add("hidden")
-cards.classList.add("hidden")
-achievements.classList.add("hidden")
+this.hide("campaigns")
+this.hide("armies")
+this.hide("cards")
+this.hide("achievements")
 
-menu.classList.remove("hidden")
+this.show("menu")
 
 },
 
 /* лог */
 
 log(text){
+
+let log=document.getElementById("log")
 
 this.logLines.unshift(text)
 
@@ -70,6 +84,11 @@ log.innerHTML=this.logLines.join("<br>")
 
 update(){
 
+let playerBar=document.getElementById("playerBar")
+let enemyBar=document.getElementById("enemyBar")
+let wallBar=document.getElementById("wallBar")
+let tpValue=document.getElementById("tpValue")
+
 playerBar.style.width=Math.max(Game.player.hp,0)+"%"
 enemyBar.style.width=Math.max(Game.enemy.hp,0)+"%"
 wallBar.style.width=Math.max(Game.walls,0)+"%"
@@ -82,8 +101,13 @@ tpValue.innerText=Game.player.tp
 
 showHistory(stage){
 
-game.classList.add("hidden")
-history.classList.remove("hidden")
+this.hide("game")
+this.show("history")
+
+let histTitle=document.getElementById("histTitle")
+let histDesc=document.getElementById("histDesc")
+let histFacts=document.getElementById("histFacts")
+let wiki=document.getElementById("wiki")
 
 histTitle.innerText=stage.title
 histDesc.innerText=stage.desc
@@ -91,9 +115,7 @@ histDesc.innerText=stage.desc
 histFacts.innerHTML=""
 
 stage.facts.forEach(f=>{
-
 histFacts.innerHTML+="<li>"+f+"</li>"
-
 })
 
 wiki.href=stage.wiki
@@ -102,7 +124,7 @@ wiki.href=stage.wiki
 
 closeHistory(){
 
-history.classList.add("hidden")
+this.hide("history")
 
 this.showQuiz()
 
@@ -112,9 +134,13 @@ this.showQuiz()
 
 showQuiz(){
 
+let quiz=document.getElementById("quiz")
+let quizQuestion=document.getElementById("quizQuestion")
+let quizAnswers=document.getElementById("quizAnswers")
+
 let q=QUIZ[Math.floor(Math.random()*QUIZ.length)]
 
-quiz.classList.remove("hidden")
+this.show("quiz")
 
 quizQuestion.innerText=q.q
 
@@ -134,7 +160,7 @@ ${ans}
 
 answer(i,correct){
 
-quiz.classList.add("hidden")
+this.hide("quiz")
 
 if(i===correct){
 
@@ -150,7 +176,7 @@ alert("Неправильно")
 
 Game.continueCampaign()
 
-game.classList.remove("hidden")
+this.show("game")
 
 },
 
@@ -158,8 +184,10 @@ game.classList.remove("hidden")
 
 showCards(){
 
-menu.classList.add("hidden")
-cards.classList.remove("hidden")
+this.hide("menu")
+this.show("cards")
+
+let cardsList=document.getElementById("cardsList")
 
 let html=""
 
@@ -182,8 +210,10 @@ cardsList.innerHTML=html
 
 showAchievements(){
 
-menu.classList.add("hidden")
-achievements.classList.remove("hidden")
+this.hide("menu")
+this.show("achievements")
+
+let achList=document.getElementById("achList")
 
 let html=""
 
