@@ -1,4 +1,4 @@
-const Achievements={
+const Achievements = {
 
 list:{
 
@@ -32,9 +32,9 @@ quizMaster:"Ответить правильно на викторину"
 
 },
 
-unlocked:JSON.parse(localStorage.getItem("achievements")||"{}"),
+unlocked: JSON.parse(localStorage.getItem("achievements") || "{}"),
 
-stats:JSON.parse(localStorage.getItem("stats")||"{}"),
+stats: JSON.parse(localStorage.getItem("stats") || "{}"),
 
 save(){
 
@@ -52,13 +52,15 @@ JSON.stringify(this.stats)
 
 unlock(id){
 
+if(!this.list[id]) return
+
 if(this.unlocked[id]) return
 
-this.unlocked[id]=true
+this.unlocked[id] = true
 
 this.save()
 
-UI.log("🏆 Достижение: "+this.list[id])
+UI.log("🏆 Достижение: " + this.list[id])
 
 },
 
@@ -77,19 +79,19 @@ this.save()
 
 check(){
 
-if(this.stats.cities>=1)
+if((this.stats.cities||0)>=1)
 this.unlock("firstCity")
 
-if(this.stats.cities>=2)
+if((this.stats.cities||0)>=2)
 this.unlock("twoCities")
 
-if(this.stats.cities>=5)
+if((this.stats.cities||0)>=5)
 this.unlock("fiveCities")
 
-if(this.stats.walls>=10)
+if((this.stats.walls||0)>=10)
 this.unlock("tenWalls")
 
-if(this.stats.wins>=10)
+if((this.stats.wins||0)>=10)
 this.unlock("warLord")
 
 }
