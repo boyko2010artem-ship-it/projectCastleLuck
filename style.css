@@ -1,28 +1,20 @@
 body{
 margin:0;
-font-family:-apple-system,BlinkMacSystemFont;
-background:radial-gradient(circle at top,#1e293b,#000);
+font-family:-apple-system;
+background:radial-gradient(circle,#1e293b,#000);
 color:white;
-padding-top:env(safe-area-inset-top);
-padding-bottom:env(safe-area-inset-bottom);
 }
 
 .app{
 max-width:520px;
 margin:auto;
-padding:16px;
-}
-
-header{
-text-align:center;
-font-size:22px;
-margin-bottom:20px;
+padding:20px;
 }
 
 .screen{
 display:flex;
 flex-direction:column;
-gap:18px;
+gap:16px;
 }
 
 .hidden{
@@ -32,30 +24,29 @@ display:none;
 button{
 padding:14px;
 border:none;
-border-radius:16px;
-background:linear-gradient(145deg,#2563eb,#1e40af);
+border-radius:14px;
+background:#2563eb;
 color:white;
 font-size:16px;
 }
 
 .card{
-background:rgba(255,255,255,0.08);
-padding:14px;
-border-radius:18px;
+background:rgba(255,255,255,0.1);
+padding:12px;
+border-radius:14px;
 }
 
 .hpbar{
 height:16px;
 background:#111;
-border-radius:10px;
+border-radius:8px;
 overflow:hidden;
-margin-bottom:8px;
 }
 
 .hpbar div{
 height:100%;
-background:linear-gradient(90deg,#22c55e,#16a34a);
-transition:width 0.3s ease;
+background:#22c55e;
+transition:width .4s;
 }
 
 .actions{
@@ -66,100 +57,45 @@ gap:10px;
 .actions button{
 flex:1;
 border-radius:50%;
-height:55px;
-font-size:20px;
+height:60px;
+font-size:22px;
 }
 
-.log{
-background:rgba(0,0,0,0.6);
+#log{
+background:black;
 padding:10px;
-border-radius:14px;
-min-height:50px;
+border-radius:10px;
 text-align:center;
 }
-
-/* карта */
-
-.worldMap{
-position:relative;
-height:220px;
-background:linear-gradient(180deg,#0f172a,#020617);
-border-radius:20px;
-}
-
-.mapPoint{
-position:absolute;
-font-size:28px;
-transform:translate(-50%,-50%);
-}
-
-.mapPoint.current{
-transform:translate(-50%,-50%) scale(1.5);
-}
-
-/* победа */
-
-.victory{
-position:fixed;
-inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-background:rgba(0,0,0,0.9);
-}
-
-.victory.hidden{
-display:none;
-}
-
-.victory-content{
-background:#1e40af;
-padding:30px;
-border-radius:20px;
-text-align:center;
-}
-
-/* историческая карточка */
 
 .modal{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.85);
+background:black;
 display:flex;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 }
 
-.modal.hidden{
-display:none;
+.map{
+display:flex;
+gap:10px;
+justify-content:center;
 }
 
-.modal-content{
-background:#1e293b;
-padding:20px;
-border-radius:18px;
-width:85%;
-text-align:center;
+.stage{
+font-size:26px;
 }
 
-/* достижения */
-
-.achievementPopup{
-position:fixed;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-background:#1e40af;
-padding:12px 20px;
-border-radius:12px;
-animation:popup 3s forwards;
+.stage.current{
+transform:scale(1.5);
 }
 
-@keyframes popup{
+.hit{
+animation:hit .3s;
+}
 
-0%{opacity:0;top:-50px}
-20%{opacity:1;top:20px}
-80%{opacity:1}
-100%{opacity:0}
-
+@keyframes hit{
+50%{transform:scale(1.3)}
 }
