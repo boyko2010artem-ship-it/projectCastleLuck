@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Castleluck</title>
 
@@ -12,12 +12,11 @@
 
 </head>
 
-
 <body>
 
-<h1>Castleluck</h1>
+<h1 class="title">Castleluck</h1>
 
-<!-- MENU -->
+<!-- ================= MENU ================= -->
 
 <div id="menu">
 
@@ -35,43 +34,51 @@
 
 </div>
 
+<!-- ================= CAMPAIGNS ================= -->
 
-<!-- CAMPAIGNS -->
-
-<div id="campaigns" class="hidden">
+<div id="campaigns" class="screen hidden">
 
 <h2>Выбор кампании</h2>
 
 <button onclick="Game.chooseCampaign('europe')">
-Европа
+Кампания Европы
 </button>
 
 <button onclick="Game.chooseCampaign('rus')">
-Русь
+Кампания Руси
+</button>
+
+<button onclick="UI.back()">
+Назад
 </button>
 
 </div>
 
+<!-- ================= ARMIES ================= -->
 
-<!-- ARMIES -->
-
-<div id="armies" class="hidden">
+<div id="armies" class="screen hidden">
 
 <h2>Выбор армии</h2>
 
 <div id="armyList"></div>
 
+<button onclick="UI.back()">
+Назад
+</button>
+
 </div>
 
+<!-- ================= GAME ================= -->
 
-<!-- GAME -->
-
-<div id="game" class="hidden">
+<div id="game" class="screen hidden">
 
 <h2 id="cityName"></h2>
 
-<div class="map" id="map"></div>
+<!-- карта -->
 
+<div id="map" class="map"></div>
+
+<!-- замок -->
 
 <div id="castle">
 
@@ -79,6 +86,9 @@
 
 </div>
 
+<!-- HP -->
+
+<div class="bars">
 
 <div class="bar">
 
@@ -92,7 +102,6 @@
 
 </div>
 
-
 <div class="bar">
 
 Гарнизон
@@ -104,7 +113,6 @@
 </div>
 
 </div>
-
 
 <div class="bar">
 
@@ -118,31 +126,43 @@
 
 </div>
 
+</div>
 
-<p>Очки действий: <span id="tpValue">0</span></p>
+<p class="tp">
+Очки действий: <span id="tpValue">0</span>
+</p>
 
+<!-- действия -->
 
-<div>
+<div class="actions">
 
-<button onclick="Game.attack()">Атака</button>
+<button onclick="Game.attack()" class="action">
+⚔
+</button>
 
-<button onclick="Game.siege()">Осада</button>
+<button onclick="Game.siege()" class="action">
+🧱
+</button>
 
-<button onclick="Game.heal()">Лечение</button>
+<button onclick="Game.heal()" class="action">
+❤️
+</button>
 
-<button onclick="Game.special()">Спецудар</button>
+<button onclick="Game.special()" class="action">
+🔥
+</button>
 
 </div>
 
+<!-- лог -->
 
-<div id="log"></div>
+<div id="log" class="log"></div>
 
 </div>
 
+<!-- ================= HISTORY ================= -->
 
-<!-- HISTORY -->
-
-<div id="history" class="hidden">
+<div id="history" class="screen hidden">
 
 <h2 id="histTitle"></h2>
 
@@ -153,7 +173,7 @@
 <br>
 
 <a id="wiki" target="_blank">
-Wikipedia
+Открыть статью Wikipedia
 </a>
 
 <br><br>
@@ -164,10 +184,9 @@ Wikipedia
 
 </div>
 
+<!-- ================= QUIZ ================= -->
 
-<!-- QUIZ -->
-
-<div id="quiz" class="hidden">
+<div id="quiz" class="screen hidden">
 
 <h2>Исторический вопрос</h2>
 
@@ -177,10 +196,9 @@ Wikipedia
 
 </div>
 
+<!-- ================= CARDS ================= -->
 
-<!-- CARDS -->
-
-<div id="cards" class="hidden">
+<div id="cards" class="screen hidden">
 
 <h2>Исторические карточки</h2>
 
@@ -192,10 +210,9 @@ Wikipedia
 
 </div>
 
+<!-- ================= ACHIEVEMENTS ================= -->
 
-<!-- ACHIEVEMENTS -->
-
-<div id="achievements" class="hidden">
+<div id="achievements" class="screen hidden">
 
 <h2>Достижения</h2>
 
@@ -206,7 +223,6 @@ Wikipedia
 </button>
 
 </div>
-
 
 <script src="data.js"></script>
 <script src="armies.js"></script>
@@ -219,5 +235,4 @@ Wikipedia
 <script src="game.js"></script>
 
 </body>
-
 </html>
