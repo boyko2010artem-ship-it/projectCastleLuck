@@ -2,12 +2,17 @@ const UI = {
 
 logLines:[],
 
+/* меню */
+
 showCampaigns(){
+
 menu.classList.add("hidden")
 campaigns.classList.remove("hidden")
+
 },
 
 showArmies(){
+
 campaigns.classList.add("hidden")
 armies.classList.remove("hidden")
 
@@ -15,33 +20,40 @@ let html=""
 
 for(let id in ARMIES){
 
-let army=ARMIES[id]
+let a=ARMIES[id]
 
 html+=`
 <button onclick="Game.chooseArmy('${id}')">
-<h3>${army.name}</h3>
-<p>${army.description}</p>
+<h3>${a.name}</h3>
+<p>${a.description}</p>
 </button>
 `
 
 }
 
 armyList.innerHTML=html
+
 },
 
 startGame(){
+
 armies.classList.add("hidden")
 game.classList.remove("hidden")
+
 },
 
-update(){
+back(){
 
-playerBar.style.width=Math.max(Game.player.hp,0)+"%"
-enemyBar.style.width=Math.max(Game.enemy.hp,0)+"%"
-wallBar.style.width=Math.max(Game.walls,0)+"%"
+campaigns.classList.add("hidden")
+armies.classList.add("hidden")
+cards.classList.add("hidden")
+achievements.classList.add("hidden")
 
-tpValue.innerText=Game.player.tp
+menu.classList.remove("hidden")
+
 },
+
+/* лог */
 
 log(text){
 
@@ -51,14 +63,26 @@ if(this.logLines.length>6)
 this.logLines.pop()
 
 log.innerHTML=this.logLines.join("<br>")
+
 },
 
-/* ---------- ИСТОРИЯ ---------- */
+/* обновление интерфейса */
+
+update(){
+
+playerBar.style.width=Math.max(Game.player.hp,0)+"%"
+enemyBar.style.width=Math.max(Game.enemy.hp,0)+"%"
+wallBar.style.width=Math.max(Game.walls,0)+"%"
+
+tpValue.innerText=Game.player.tp
+
+},
+
+/* ---------- история ---------- */
 
 showHistory(stage){
 
 game.classList.add("hidden")
-
 history.classList.remove("hidden")
 
 histTitle.innerText=stage.title
@@ -67,25 +91,12 @@ histDesc.innerText=stage.desc
 histFacts.innerHTML=""
 
 stage.facts.forEach(f=>{
+
 histFacts.innerHTML+="<li>"+f+"</li>"
+
 })
 
 wiki.href=stage.wiki
-
-/* добавляем кнопку */
-
-history.innerHTML+=`
-<br>
-<button id="continueBtn">Продолжить</button>
-`
-
-document
-.getElementById("continueBtn")
-.onclick=()=>{
-
-UI.closeHistory()
-
-}
 
 },
 
@@ -97,7 +108,7 @@ this.showQuiz()
 
 },
 
-/* ---------- ВИКТОРИНА ---------- */
+/* ---------- викторина ---------- */
 
 showQuiz(){
 
@@ -143,7 +154,7 @@ game.classList.remove("hidden")
 
 },
 
-/* ---------- КАРТОЧКИ ---------- */
+/* карточки */
 
 showCards(){
 
@@ -165,10 +176,9 @@ html+=`
 
 cardsList.innerHTML=html
 
-Achievements.unlock("historian")
 },
 
-/* ---------- ДОСТИЖЕНИЯ ---------- */
+/* достижения */
 
 showAchievements(){
 
@@ -183,20 +193,13 @@ let unlocked=Achievements.unlocked[id]
 
 html+=`
 <div>
-${unlocked?"✅":"⬜"} ${Achievements.list[id]}
+${unlocked?"🏆":"⬜"} ${Achievements.list[id]}
 </div>
 `
 
 }
 
 achList.innerHTML=html
-},
-
-back(){
-
-cards.classList.add("hidden")
-achievements.classList.add("hidden")
-menu.classList.remove("hidden")
 
 }
 
