@@ -8,10 +8,8 @@
 <title>Castleluck</title>
 
 <link rel="stylesheet" href="style.css">
-
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#1e40af">
 
 </head>
 
@@ -23,16 +21,45 @@
 <h1>Castleluck</h1>
 </header>
 
+<div id="mainMenu" class="screen">
 
-<div id="menu" class="screen">
+<button onclick="UI.openPlay()">▶ Играть</button>
+<button onclick="UI.openAchievements()">🏆 Достижения</button>
+<button onclick="UI.openAbout()">📖 О проекте</button>
 
-<button onclick="Game.start('EUROPE')">
-🌍 Кампания Европы
-</button>
+</div>
 
-<button onclick="Game.start('RUS')">
-🛡 Кампания Руси
-</button>
+
+<div id="playMenu" class="screen hidden">
+
+<h2>Кампания</h2>
+
+<button onclick="Game.chooseCampaign('EUROPE')">🌍 Европа</button>
+<button onclick="Game.chooseCampaign('RUS')">🛡 Русь</button>
+
+<button onclick="UI.backMenu()">⬅ Назад</button>
+
+</div>
+
+
+
+<div id="armyMenu" class="screen hidden">
+
+<h2>Армия</h2>
+
+<div id="armyList"></div>
+
+</div>
+
+
+
+<div id="difficultyMenu" class="screen hidden">
+
+<h2>Сложность</h2>
+
+<button onclick="Game.startGame(1)">Лёгкая</button>
+<button onclick="Game.startGame(2)">Нормальная</button>
+<button onclick="Game.startGame(3)">Историческая</button>
 
 </div>
 
@@ -44,7 +71,6 @@
 
 <div id="map"></div>
 
-
 <div class="card">
 
 <h3>Противник</h3>
@@ -53,10 +79,7 @@
 <div id="enemyBar"></div>
 </div>
 
-<div>Мораль: <span id="enemyMorale"></span></div>
-
 </div>
-
 
 
 <div class="card">
@@ -67,87 +90,57 @@
 <div id="playerBar"></div>
 </div>
 
-<div>ТО: <span id="playerTP"></span></div>
-
-<div>Мораль: <span id="playerMorale"></span></div>
+<div>Энергия: <span id="playerTP"></span></div>
 
 </div>
-
 
 
 <div class="actions">
 
-<button onclick="Game.playerAction('attack')">
-⚔
-</button>
+<button onclick="Game.playerAction('attack')">⚔</button>
+<button onclick="Game.playerAction('heal')">💚</button>
+<button onclick="Game.playerAction('rocket')">🚀</button>
 
-<button onclick="Game.playerAction('heal')">
-💚
-</button>
+</div>
 
-<button onclick="Game.playerAction('rocket')">
-🚀
-</button>
+<div id="log"></div>
 
 </div>
 
 
 
-<div id="log" class="log"></div>
+<div id="historyModal" class="modal hidden">
 
-</div>
+<h2 id="historyTitle"></h2>
+<p id="historyDesc"></p>
 
-</div>
+<ul id="historyFacts"></ul>
 
+<a id="wikiLink" target="_blank">Wikipedia</a>
 
-
-<div id="victoryScreen" class="victory hidden">
-
-<div class="victory-content">
-
-<h1 id="victoryTitle"></h1>
-
-<div id="victoryStats"></div>
-
-<button id="victoryBtn">
-Продолжить
-</button>
-
-</div>
+<button onclick="UI.closeHistory()">Продолжить</button>
 
 </div>
 
 
 
-<div id="modal" class="modal hidden">
+<div id="achievementsScreen" class="screen hidden">
 
-<div class="modal-content">
+<h2>Достижения</h2>
 
-<h2 id="modalTitle"></h2>
+<div id="achievementsList"></div>
 
-<p id="modalDesc"></p>
-
-<ul id="modalFacts"></ul>
-
-<a id="modalLink" target="_blank">
-Читать подробнее
-</a>
-
-<button id="continueBtn">
-Дальше
-</button>
+<button onclick="UI.backMenu()">⬅ Назад</button>
 
 </div>
-
-</div>
-
 
 
 <script src="data.js"></script>
-<script src="events.js"></script>
-<script src="map.js"></script>
+<script src="audio.js"></script>
 <script src="achievements.js"></script>
 <script src="save.js"></script>
+<script src="map.js"></script>
+<script src="ai.js"></script>
 <script src="ui.js"></script>
 <script src="game.js"></script>
 
