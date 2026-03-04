@@ -2,7 +2,7 @@ const AudioSystem={
 
 ctx:new (window.AudioContext||window.webkitAudioContext)(),
 
-beep(freq){
+play(freq,time=0.2){
 
 let o=this.ctx.createOscillator()
 let g=this.ctx.createGain()
@@ -16,9 +16,15 @@ o.start()
 
 g.gain.exponentialRampToValueAtTime(
 0.0001,
-this.ctx.currentTime+0.3
+this.ctx.currentTime+time
 )
 
-}
+},
+
+attack(){this.play(400)}
+
+rocket(){this.play(150,0.5)}
+
+heal(){this.play(700)}
 
 }
