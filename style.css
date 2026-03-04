@@ -9,6 +9,8 @@ padding:0;
 
 }
 
+/* ---------- заголовок ---------- */
+
 .title{
 
 margin-top:20px;
@@ -16,7 +18,7 @@ font-size:34px;
 
 }
 
-/* экраны */
+/* ---------- экраны ---------- */
 
 .screen{
 
@@ -30,7 +32,7 @@ display:none;
 
 }
 
-/* кнопки */
+/* ---------- кнопки ---------- */
 
 button{
 
@@ -58,7 +60,7 @@ transform:scale(.95);
 
 }
 
-/* действия */
+/* ---------- действия ---------- */
 
 .actions{
 
@@ -75,7 +77,7 @@ border-radius:12px;
 
 }
 
-/* карта */
+/* ---------- карта ---------- */
 
 .map{
 
@@ -117,7 +119,7 @@ transform:scale(1.2);
 
 }
 
-/* замок */
+/* ---------- замок ---------- */
 
 #castle{
 
@@ -133,13 +135,12 @@ height:110px;
 margin:auto;
 border:5px solid #444;
 border-radius:8px;
-background:#888;
 
 transition:.4s;
 
 }
 
-/* стадии разрушения */
+/* ---------- стадии стен ---------- */
 
 .wall1{
 
@@ -147,43 +148,52 @@ background:#8b8b8b;
 
 }
 
+/* первые трещины */
+
 .wall2{
 
 background:#777;
 
 background-image:
-linear-gradient(45deg,#222 2px,transparent 2px),
-linear-gradient(-45deg,#222 2px,transparent 2px);
+linear-gradient(45deg,#222 3px,transparent 3px),
+linear-gradient(-45deg,#222 3px,transparent 3px);
 
-background-size:20px 20px;
+background-size:22px 22px;
 
 }
+
+/* сильные трещины */
 
 .wall3{
 
 background:#555;
 
 background-image:
-linear-gradient(45deg,#111 3px,transparent 3px),
-linear-gradient(-45deg,#111 3px,transparent 3px);
+linear-gradient(45deg,#000 4px,transparent 4px),
+linear-gradient(-45deg,#000 4px,transparent 4px),
+linear-gradient(90deg,#000 2px,transparent 2px);
 
-background-size:16px 16px;
+background-size:18px 18px;
 
 }
+
+/* почти разрушена */
 
 .wall4{
 
 background:#333;
 
 background-image:
-linear-gradient(45deg,#000 4px,transparent 4px),
-linear-gradient(-45deg,#000 4px,transparent 4px);
+linear-gradient(45deg,#000 5px,transparent 5px),
+linear-gradient(-45deg,#000 5px,transparent 5px),
+linear-gradient(90deg,#000 3px,transparent 3px),
+linear-gradient(0deg,#000 3px,transparent 3px);
 
-background-size:12px 12px;
+background-size:14px 14px;
 
 }
 
-/* полоски HP */
+/* ---------- полосы HP ---------- */
 
 .bars{
 
@@ -233,7 +243,7 @@ background:#eab308;
 
 }
 
-/* очки действий */
+/* ---------- очки действий ---------- */
 
 .tp{
 
@@ -241,7 +251,7 @@ margin-top:12px;
 
 }
 
-/* лог */
+/* ---------- лог ---------- */
 
 .log{
 
@@ -251,7 +261,18 @@ font-size:14px;
 
 }
 
-/* ---------- АНИМАЦИИ ---------- */
+/* ---------- карточки ---------- */
+
+.card{
+
+background:#1e293b;
+margin:12px;
+padding:12px;
+border-radius:10px;
+
+}
+
+/* ---------- анимация удара ---------- */
 
 .hit{
 
@@ -267,31 +288,20 @@ animation:hit .3s;
 
 }
 
-/* тряска стены */
+/* ---------- анимация разрушения ---------- */
 
-.wallShake{
+.wallBreak{
 
-animation:shake .35s;
+animation:breakWall .35s;
 
 }
 
-@keyframes shake{
+@keyframes breakWall{
 
-0%{transform:translateX(0)}
-25%{transform:translateX(-5px)}
-50%{transform:translateX(5px)}
+0%{transform:scale(1)}
+25%{transform:translateX(-6px)}
+50%{transform:translateX(6px)}
 75%{transform:translateX(-4px)}
-100%{transform:translateX(0)}
-
-}
-
-/* карточки */
-
-.card{
-
-background:#1e293b;
-margin:12px;
-padding:12px;
-border-radius:10px;
+100%{transform:scale(1)}
 
 }
