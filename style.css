@@ -52,7 +52,13 @@ transition:width 0.3s ease;
 }
 
 .actions{display:flex;gap:10px;}
-.actions button{flex:1;border-radius:50%;height:55px;font-size:20px;}
+
+.actions button{
+flex:1;
+border-radius:50%;
+height:55px;
+font-size:20px;
+}
 
 .log{
 background:rgba(0,0,0,0.6);
@@ -62,17 +68,36 @@ min-height:50px;
 text-align:center;
 }
 
-.map{display:flex;justify-content:space-between;margin-bottom:10px;}
-.map-point{width:16px;height:16px;border-radius:50%;background:#444;}
+.map{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+.map-point{
+width:16px;
+height:16px;
+border-radius:50%;
+background:#444;
+}
+
 .map-point.done{background:#22c55e;}
-.map-point.current{background:#facc15;transform:scale(1.3);}
+
+.map-point.current{
+background:#facc15;
+transform:scale(1.3);
+}
 
 .victory{
-position:fixed;inset:0;
-display:flex;justify-content:center;align-items:center;
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
 background:rgba(0,0,0,0.9);
 z-index:9999;
 }
+
 .victory.hidden{display:none;}
 
 .victory-content{
@@ -98,10 +123,14 @@ color:white;
 }
 
 .modal{
-position:fixed;inset:0;
+position:fixed;
+inset:0;
 background:rgba(0,0,0,0.85);
-display:flex;justify-content:center;align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 }
+
 .modal.hidden{display:none;}
 
 .modal-content{
@@ -110,4 +139,45 @@ padding:20px;
 border-radius:18px;
 width:85%;
 text-align:center;
+}
+
+/* ===== АНИМАЦИИ ===== */
+
+.hitFlash{
+animation:hitFlash 0.3s;
+}
+
+@keyframes hitFlash{
+0%{background:#3b0000;}
+100%{background:radial-gradient(circle at top,#1e293b,#000);}
+}
+
+.swordAnim{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:60px;
+animation:swordStrike 0.4s forwards;
+pointer-events:none;
+}
+
+@keyframes swordStrike{
+0%{transform:translate(-50%,-120%) rotate(-30deg);opacity:0;}
+40%{opacity:1;}
+100%{transform:translate(-50%,40%) rotate(20deg);opacity:0;}
+}
+
+.rocketAnim{
+position:fixed;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+font-size:50px;
+animation:rocketFly 0.8s forwards;
+}
+
+@keyframes rocketFly{
+0%{bottom:10px;}
+100%{bottom:100vh;}
 }
