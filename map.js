@@ -2,25 +2,17 @@ const MapSystem={
 
 render(){
 
-const map=document.getElementById("map")
+let map=document.getElementById("map")
 
-let html=`<div class="worldMap">`
+let html="<div class='map'>"
 
-Game.campaign.forEach((stage,i)=>{
+Game.campaign.forEach((s,i)=>{
 
-let left=25+(i*20)
-let top=60-(i*10)
-
-html+=`
-<div class="mapPoint ${i===Game.stage?'current':''}"
-style="top:${top}%;left:${left}%">
-⚔
-</div>
-`
+html+=`<div class="stage ${i===Game.stage?'current':''}">⚔</div>`
 
 })
 
-html+=`</div>`
+html+="</div>"
 
 map.innerHTML=html
 
